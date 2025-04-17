@@ -18,7 +18,7 @@ def create_app(test_config = None):
 
 
     # defining routes
-    @app.route('/')
+    @app.route('/', methods=('GET',))
     def home():
         return render_template('other_views/index.html')
 
