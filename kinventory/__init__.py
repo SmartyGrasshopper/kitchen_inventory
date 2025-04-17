@@ -20,6 +20,9 @@ def create_app(test_config = None):
     # defining routes
     @app.route('/')
     def home():
-        return "This is Home Page", 200
+        return "<html>" \
+        "<head><title>Kitchen Inventory</title><link rel=icon href=/static/favicon.png type=image/png></head>" \
+        "<body>Home Page</body></html>", 200
+
     
     return app
