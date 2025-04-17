@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 def create_app(test_config = None):
 
@@ -20,9 +20,7 @@ def create_app(test_config = None):
     # defining routes
     @app.route('/')
     def home():
-        return "<html>" \
-        "<head><title>Kitchen Inventory</title><link rel=icon href=/static/favicon.png type=image/png></head>" \
-        "<body>Home Page</body></html>", 200
+        return render_template('other_views/index.html')
 
     
     return app
