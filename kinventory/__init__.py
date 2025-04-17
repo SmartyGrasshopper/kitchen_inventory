@@ -3,11 +3,16 @@ from flask import Flask, render_template
 
 def create_app(test_config = None):
 
-    # creating app object
+    # creating and configuring the app object
     app = Flask(
         __name__, 
         instance_relative_config = True, 
         instance_path = "{}/instance".format(os.getcwd())
+    )
+
+    app.config.from_mapping(
+        SECRET_KEY='kitchenInventory_18April2025',
+        DATABASE = os.path.join(app.instance_path, 'data.sqlite')
     )
 
     # ensuring instance folder exists
@@ -19,8 +24,11 @@ def create_app(test_config = None):
 
     # defining routes
     @app.route('/', methods=('GET',))
-    def home():
-        return render_template('other_views/index.html')
+    def index():
+        return render_template('index.html')
 
+    # registering blue-prints for other views
+    from kinventory import auth
+    app.register_blueprint(auth.bp)
     
     return app
