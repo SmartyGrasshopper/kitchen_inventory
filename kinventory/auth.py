@@ -1,8 +1,10 @@
 from flask import (
     Blueprint, render_template,
     session, request,
-    flash, redirect, url_for
+    flash, redirect, url_for, g
 )
+
+import functools
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -62,3 +64,27 @@ def logout():
     session.clear()
     flash('Logged-out successfully.')
     return redirect(url_for('index'))
+
+# if a user is signed-in, load its detail in g object
+# before every request so that its details are available
+# throughout the request (through g).
+@bp.before_app_request
+def load_logged_in_user():
+    username = session.get('username')
+
+    if username is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM users WHERE username = ?', username
+        ).fetchone()
+
+# wrap any view that requires a user to be logged in
+# with this decorator
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+             return redirect(url_for('auth.signin'))
+        return view(**kwargs)
+    return wrapped_view
