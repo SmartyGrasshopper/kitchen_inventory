@@ -30,5 +30,9 @@ def create_app(test_config = None):
     # registering blue-prints for other views
     from kinventory import auth
     app.register_blueprint(auth.bp)
+
+    # adding db functionality to the app
+    from kinventory import database
+    database.add_db_functionality(app)
     
     return app
