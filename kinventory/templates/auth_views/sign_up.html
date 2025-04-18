@@ -9,5 +9,13 @@ Kitchen Inventory
 {% endblock %}
 
 {% block body %}
-<p>This is signup page.</p>
+<form method="post">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required />
+    <label for="password">Passoword</label>
+    <input type="password" name="password" id="password" required />
+    <label for="business_name">Business Name</label>
+    <input type="text" name="business_name" placeholder="Name visible to customers" required />
+    <input type="submit" value="Sign Up" />
+</form>
 {% endblock %}

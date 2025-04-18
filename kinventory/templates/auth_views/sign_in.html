@@ -9,5 +9,11 @@ Kitchen Inventory
 {% endblock %}
 
 {% block body %}
-<p>This is sign in page.</p>
+<form method="post">
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" required />
+    <label for="password">Passoword</label>
+    <input type="password" name="password" id="password" required />
+    <input type="submit" value="Sign In" />
+</form>
 {% endblock %}
