@@ -1,4 +1,4 @@
-button{
+a{
     margin: 5px;
 }
 
@@ -6,7 +6,8 @@ button{
     background-color: orangered;
     color: white;
     border-style: none;
-    padding: 10px;
+    padding: 5px;
+    text-decoration: none;
 }
 .solid_button:hover{
     background-color: rgb(227, 61, 0);
@@ -16,7 +17,8 @@ button{
     background: none;
     color: orangered;
     border: 2px solid orangered;
-    padding: 10px;
+    padding: 3px;
+    text-decoration: none;
 }
 .outlined_button:hover{
     border-color: rgb(189, 50, 0);
