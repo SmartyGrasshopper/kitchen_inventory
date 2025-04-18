@@ -1,6 +1,7 @@
 from flask import (
     Blueprint, render_template,
-    session, request
+    session, request,
+    flash, redirect, url_for
 )
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -24,4 +25,5 @@ def signup():
 @bp.route('/logout', methods=('GET', 'POST'))
 def logout():
     session.clear()
-    return render_template('auth_views/logout_success.html')
+    flash('Logged-out successfully.')
+    return redirect(url_for('index'))

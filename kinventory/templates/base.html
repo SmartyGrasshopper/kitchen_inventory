@@ -5,7 +5,16 @@
         <link rel="icon" href=/static/favicon.png type=image/png />
         <link rel="stylesheet" href="{% block cssfile %}{% endblock %}" />
     </head>
-    <body>
+    <body>        
         {% block body %}{% endblock %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul id="flash">
+                {% for message in messages %}
+                    <li>{{message}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
     </body>
 </html>
