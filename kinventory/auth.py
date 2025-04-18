@@ -65,11 +65,12 @@ def logout():
     flash('Logged-out successfully.')
     return redirect(url_for('index'))
 
-# if a user is signed-in, load its detail in g object
-# before every request so that its details are available
-# throughout the request (through g).
 @bp.before_app_request
 def load_logged_in_user():
+    # if a user is signed-in, load its detail in g object
+    # before every request so that its details are available
+    # throughout the request (through g).
+
     username = session.get('username')
 
     if username is None:
@@ -79,9 +80,10 @@ def load_logged_in_user():
             'SELECT * FROM users WHERE username = ?', username
         ).fetchone()
 
-# wrap any view that requires a user to be logged in
-# with this decorator
 def login_required(view):
+    # wrap any view that requires a user to be logged in
+    # with this decorator
+
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
