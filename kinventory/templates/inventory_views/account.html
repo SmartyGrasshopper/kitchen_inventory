@@ -11,5 +11,5 @@
 {% block body %}
 This is account page for {{g.user['username']}}.
 
-<a href="{{url_for('auth.logout')}}">Logout</a>
+<a href="{{url_for('auth.logout')}}" class="outlined_button">Logout</a>
 {% endblock %}
