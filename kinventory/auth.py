@@ -4,6 +4,8 @@ from flask import (
     flash, redirect, url_for
 )
 
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from kinventory.database import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -28,7 +30,7 @@ def signup():
         try:
             db.execute(
                 "INSERT INTO users (username, psword, business_name) VALUES (?,?,?);",
-                    (username, password, business_name)
+                    (username, generate_password_hash(password), business_name)
             )
             db.commit()
         except db.IntegrityError:
