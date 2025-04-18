@@ -1,3 +1,12 @@
+@font-face {
+    font-family: montserrat;
+    src: url("../fonts/Montserrat_VariableFont_wght.ttf") format('truetype');
+}
+
+body{
+    font-family: montserrat;
+}
+
 a{
     margin: 5px;
 }
@@ -26,7 +35,7 @@ a{
 }
 
 ul#flash{
-    background-color: rgb(194, 255, 129);
+    background-color: rgb(255, 202, 70);
     padding: 10px;
     list-style-type: none;
 }
