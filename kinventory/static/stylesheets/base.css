@@ -1,3 +1,24 @@
-body{
-    background-color: rgb(255, 255, 134);
+button{
+    margin: 5px;
+}
+
+button.solid_button{
+    background-color: orangered;
+    color: white;
+    border-style: none;
+    padding: 10px;
+}
+button.solid_button:hover{
+    background-color: rgb(227, 61, 0);
+}
+
+button.outlined_button{
+    background: none;
+    color: orangered;
+    border: 2px solid orangered;
+    padding: 10px;
+}
+button.outlined_button:hover{
+    border-color: rgb(189, 50, 0);
+    color: rgb(189, 50, 0);
 }

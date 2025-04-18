@@ -9,5 +9,33 @@ Kitchen Inventory
 {% endblock %}
 
 {% block body %}
-<p>This is home page.</p>
+<header>
+    <div>
+        <img src="{{url_for('static', filename='favicon.png')}}"
+            id="header_image"
+        />
+        <h1 id="header_title">Kitchen Inventory</h1>
+        <p>
+            A software solution to help
+            small and medium food businesses
+            to manage their kitchen inventory.
+        </p>
+        <a href="{{url_for('auth.signin')}}"><button class="solid_button">Sign In</button></a> <br/>
+        <a href="{{url_for('auth.signup')}}"><button class="outlined_button">Sign Up</button></a>
+    </div>
+</header>
+<article>
+    <div id="content_div">
+        <h1>About</h1>
+        <p>This is a minor project.</p>
+
+        <h1>Features</h1>
+        <ul>
+            <li>Tracking</li>
+            <li>Analytics</li>
+            <li>Supply Recommendation</li>
+            <li>Consumer order management</li>
+        </ul>
+    </div>
+</article>
 {% endblock %}
