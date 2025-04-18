@@ -28,8 +28,9 @@ def create_app(test_config = None):
         return render_template('index.html')
 
     # registering blue-prints for other views
-    from kinventory import auth
+    from kinventory import auth, inventory
     app.register_blueprint(auth.bp)
+    app.register_blueprint(inventory.bp)
 
     # adding db functionality to the app
     from kinventory import database

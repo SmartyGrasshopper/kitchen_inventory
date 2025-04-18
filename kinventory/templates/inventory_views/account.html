@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{g.user['business_name']}}
+{% endblock %}
+
+{% block cssfile %}
+{{url_for('static', filename='/stylesheets/inventory_views/account.css')}}
+{% endblock %}
+
+{% block body %}
+This is account page for {{g.user['username']}}
+{% endblock %}

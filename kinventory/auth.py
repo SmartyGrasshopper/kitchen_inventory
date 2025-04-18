@@ -32,7 +32,7 @@ def signin():
             session.clear()
             session['username'] = username
             flash("Welcome {}".format(username))
-            return redirect(url_for('index'))
+            return redirect(url_for('inventory.account'))
         
     return render_template('auth_views/sign_in.html')
 
@@ -77,16 +77,17 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = get_db().execute(
-            'SELECT * FROM users WHERE username = ?', username
+            'SELECT * FROM users WHERE username = ?', (username,)
         ).fetchone()
 
-def login_required(view):
+def signin_required(view):
     # wrap any view that requires a user to be logged in
     # with this decorator
 
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
+             flash("Last visited page requires sign-in.")
              return redirect(url_for('auth.signin'))
         return view(**kwargs)
     return wrapped_view
