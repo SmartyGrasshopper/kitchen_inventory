@@ -31,7 +31,6 @@ def signin():
         else:
             session.clear()
             session['username'] = username
-            flash("Welcome {}".format(username))
             return redirect(url_for('inventory.account'))
         
     return render_template('auth_views/sign_in.html')

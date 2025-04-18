@@ -9,5 +9,7 @@
 {% endblock %}
 
 {% block body %}
-This is account page for {{g.user['username']}}
+This is account page for {{g.user['username']}}.
+
+<a href="{{url_for('auth.logout')}}">Logout</a>
 {% endblock %}
