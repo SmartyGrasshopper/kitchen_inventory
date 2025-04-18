@@ -15,8 +15,24 @@ def signin():
     if(request.method == 'POST'):
         username = request.form['username']
         password = request.form['password']
-    else:
-        return render_template('auth_views/sign_in.html')
+
+        db = get_db()
+
+        user = db.execute(
+            'SELECT * FROM users WHERE username = ?', (username,)
+        ).fetchone()
+
+        if user is None:
+            flash('User "{}" does not exit.'.format(username))
+        elif not check_password_hash(user['psword'], password):
+            flash('Incorrect password.')
+        else:
+            session.clear()
+            session['username'] = username
+            flash("Welcome {}".format(username))
+            return redirect(url_for('index'))
+        
+    return render_template('auth_views/sign_in.html')
 
 @bp.route('/signup', methods=('GET', 'POST'))
 def signup():
