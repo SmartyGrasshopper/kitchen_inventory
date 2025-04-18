@@ -4,6 +4,10 @@
 Kitchen Inventory
 {% endblock %}
 
+{% block cssfile %}
+{{url_for('static', filename='/stylesheets/auth_views/sign_in_up.css')}}
+{% endblock %}
+
 {% block body %}
 <p>This is signup page.</p>
 {% endblock %}

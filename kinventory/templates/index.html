@@ -4,6 +4,10 @@
 Kitchen Inventory
 {% endblock %}
 
+{% block cssfile %}
+{{url_for('static', filename='/stylesheets/index.css')}}
+{% endblock %}
+
 {% block body %}
 <p>This is home page.</p>
 {% endblock %}
