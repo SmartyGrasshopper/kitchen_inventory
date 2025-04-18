@@ -2,5 +2,6 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
     username TEXT UNIQUE NOT NULL PRIMARY KEY,
-    password TEXT NOT NULL
+    psword TEXT NOT NULL,
+    business_name TEXT
 );
