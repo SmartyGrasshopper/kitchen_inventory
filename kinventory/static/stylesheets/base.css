@@ -34,8 +34,35 @@ a{
     color: rgb(189, 50, 0);
 }
 
-ul#flash{
-    background-color: rgb(255, 202, 70);
+#flash {
+    position: relative; /* To position the close button */
     padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(255, 202, 70);
     list-style-type: none;
+}
+
+#flash .close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 18px;
+    line-height: 1;
+    color: #000000;
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#flash .close-button:hover {
+    opacity: 1;
+    color: #555;
+}
+
+#flash .close-button:focus {
+    outline: none; /* Remove default focus outline for better custom styling */
+    /* Add a custom focus style if desired, e.g., a subtle box-shadow */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }

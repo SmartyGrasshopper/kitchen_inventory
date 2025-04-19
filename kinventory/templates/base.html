@@ -4,6 +4,21 @@
         <title>{% block title %}{% endblock %}</title>
         <link rel="icon" href=/static/favicon.png type=image/png />
         <link rel="stylesheet" href="{% block cssfile %}{% endblock %}" />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashElement = document.getElementById('flash');
+                if (flashElement) {
+                    const closeButton = document.createElement('button');
+                    closeButton.classList.add('close-button');
+                    closeButton.innerHTML = '&times;'; // The '×' symbol
+                    closeButton.addEventListener('click', function() {
+                        flashElement.style.display = 'none';
+                    });
+                    flashElement.appendChild(closeButton);
+                }
+            });
+        </script>
     </head>
     <body> 
         {% with messages = get_flashed_messages() %}
