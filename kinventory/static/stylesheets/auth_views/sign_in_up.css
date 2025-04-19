@@ -1,7 +1,83 @@
 @import url("/static/stylesheets/base.css");
 
-form{
+
+form {
+    background-color: #f7fafc; /* Light background */
+    padding: 2rem;
+    border-radius: 0.5rem; /* Rounded corners */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Subtle shadow */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 1rem;
+    max-width: 300px; /* Maximum width for the form */
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #4a5568; /* Darker label color */
+    font-weight: 600;  /* Make label font bold */
+    font-size: 0.875rem; /* 14px */
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0; /* Lighter border */
+    border-radius: 0.375rem; /* Rounded corners */
+    box-sizing: border-box; /* Include padding in width */
+    font-size: 1rem; /* 16px */
+    transition: border-color 0.2s ease; /* Smooth transition */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none; /* Remove default outline */
+    border-color: #3182ce; /* Focus border color */
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15); /* Focus shadow */
+}
+
+input{
+    font-family: montserrat;
+}
+input[type="submit"] {
+    background-color: orangered; /* Blue submit button */
+    color: white;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+    font-weight: normal; /* Make the button text bold */
+}
+
+input[type="submit"]:hover {
+    background-color: rgb(205, 55, 0); /* Darker blue on hover */
+}
+
+input[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3); /* Focus shadow */
+}
+
+a {
+    color: #4a5568; /* Link color */
+    font-size: 0.875rem; /* 14px */
+    text-decoration: none; /* Remove underline */
+    text-align: center; /* Center the link */
+}
+
+a:hover {
+    color: #2d3748; /* Darker color on hover */
+    text-decoration: underline; /* Add underline on hover */
+}
+
+/* Style for error message */
+.error-message {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
 }
