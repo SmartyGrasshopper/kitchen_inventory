@@ -3,7 +3,6 @@
 .content_div{
     display:grid;
     grid-template-columns: minmax(250px,30%);
-    width: 100%;
     justify-content: center;
     gap: 5px;
 }

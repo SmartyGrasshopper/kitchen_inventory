@@ -15,9 +15,9 @@
         <p>Your account password.</p>
         <form method="post">
             <label for="current_password">Enter current password</label>
-            <input type="password" name="current_password"/>
+            <input type="password" name="current_password" required/>
             <label for="new_password">Enter new password</label>
-            <input type="text" name="new_password"/>
+            <input type="text" name="new_password" minlength="8" required/>
             <input type="submit" value="Modify" class="outlined_button" name="change_password"/>
         </form>
     </section>
@@ -26,7 +26,7 @@
         <h1>Business Name</h1>
         <p>Name of the business (visible to customers).</p>
         <form method="post">
-            <input type="text" placeholder="{{g.user['business_name']}}"/>
+            <input type="text" placeholder="{{g.user['business_name']}}" name="business_name" required/>
             <input type="submit" value="Modify" class="outlined_button" name="change_business_name"/>
         </form>
     </section>
