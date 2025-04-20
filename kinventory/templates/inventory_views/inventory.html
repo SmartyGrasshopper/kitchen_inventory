@@ -1,0 +1,13 @@
+{% extends 'inventory_views/base.html' %}
+
+{% block cssfile %}
+{{url_for('static', filename='/stylesheets/inventory_views/inventory.css')}}
+{% endblock %}
+
+{% block select_inventory %}selected_navlink{% endblock %}
+
+{% block content %}
+This is inventory page for {{g.user['username']}}.
+
+<a href="{{url_for('auth.logout')}}">Logout</a>
+{% endblock %}
