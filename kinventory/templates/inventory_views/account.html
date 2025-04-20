@@ -7,7 +7,35 @@
 {% block select_account %}selected_navlink{% endblock %}
 
 {% block content %}
-This is account page for {{g.user['username']}}.
+<div class="content_div">
+    <p>Manage account details for the user - {{g.user['username']}}</p>
 
-<a href="{{url_for('auth.logout')}}">Logout</a>
+    <section>
+        <h1>Password</h1>
+        <p>Your account password.</p>
+        <form method="post">
+            <label for="current_password">Enter current password</label>
+            <input type="password" name="current_password"/>
+            <label for="new_password">Enter new password</label>
+            <input type="text" name="new_password"/>
+            <input type="submit" value="Modify" class="outlined_button" name="change_password"/>
+        </form>
+    </section>
+
+    <section>
+        <h1>Business Name</h1>
+        <p>Name of the business (visible to customers).</p>
+        <form method="post">
+            <input type="text" placeholder="{{g.user['business_name']}}"/>
+            <input type="submit" value="Modify" class="outlined_button" name="change_business_name"/>
+        </form>
+    </section>
+
+    <section>
+        <form action="{{url_for('auth.logout')}}" method="post">
+            <input type="submit" value="Logout" class="solid_button"/>
+        </form>
+    </section>
+</div>
+
 {% endblock %}
