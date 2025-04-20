@@ -58,7 +58,7 @@ def signup():
 
     return render_template('auth_views/sign_up.html') 
     
-@bp.route('/logout', methods=('GET', 'POST'))
+@bp.route('/logout', methods=('POST',))
 def logout():
     session.clear()
     flash('Logged-out successfully.')
