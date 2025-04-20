@@ -20,8 +20,12 @@ Kitchen Inventory
             small and medium food businesses
             to manage their kitchen inventory.
         </p>
-        <a href="{{url_for('auth.signin')}}" class="solid_button">Sign In</a>
-        <a href="{{url_for('auth.signup')}}" class="outlined_button">Sign Up</a>
+        {% if g.user != None %}
+            <a href="{{url_for('inventory.inventory')}}" class="solid_button">Go to Inventory</a>
+        {% else %}
+            <a href="{{url_for('auth.signin')}}" class="solid_button">Sign In</a>
+            <a href="{{url_for('auth.signup')}}" class="outlined_button">Sign Up</a>
+        {% endif %}
     </div>
 </header>
 <article>

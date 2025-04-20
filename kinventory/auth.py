@@ -31,7 +31,7 @@ def signin():
         else:
             session.clear()
             session['username'] = username
-            return redirect(url_for('inventory.account'))
+            return redirect(url_for('inventory.inventory'))
         
     return render_template('auth_views/sign_in.html')
 
