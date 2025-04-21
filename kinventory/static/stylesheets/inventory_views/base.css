@@ -74,6 +74,21 @@ section>h1{
 #page_navigation{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     overflow-y: auto;
+    background-color:  none;
+    padding-right: 5px;
+}
+
+#page_navigation>a{
+    color:grey;
+    text-decoration: none;
+}
+
+#page_navigation>a:hover{
+    text-decoration: underline;
+}
+
+hr{
+    flex-grow: 1;
 }
