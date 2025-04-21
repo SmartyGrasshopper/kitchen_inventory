@@ -1,16 +1,6 @@
 @import url("/static/stylesheets/inventory_views/base.css");
 
-.content_div{
-    display:grid;
-    grid-template-columns: minmax(250px,30%);
-    justify-content: center;
-    gap: 5px;
-}
 
-section{
-    border-top: 1px dashed rgb(171, 171, 171);
-    padding: 10px;
-}
 
 form{
     display: grid;
@@ -18,9 +8,7 @@ form{
     gap: 5px;
 }
 
-h1{
-    font-weight: normal;
-}
+
 
 input[type="text"], input[type="password"]{
     font-family:montserrat;

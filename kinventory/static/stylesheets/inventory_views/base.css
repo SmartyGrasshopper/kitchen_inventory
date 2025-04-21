@@ -3,6 +3,8 @@
 body{
     margin-top: 0;
 }
+
+/* styling for inventory navigation bar */
 a.navbar_link{
     color: black;
     text-decoration: none;
@@ -17,19 +19,61 @@ a#selected_navlink{
     padding: 5px;
 }
 
-nav{
+nav#inventory_navigation{
     background-color: rgb(255, 255, 150);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
     padding: 10px;
-    margin-bottom: 20px;
-    position: sticky;
-    top: 0;
+    /*position: sticky;
+    top: 0;*/
+
+    grid-column-start: 1;
+    grid-column-end: 3;
+
 }
 
 #navbar_image{
     width: 3rem;
     height: auto;  
+}
+
+
+/* Styling for content div i.e. page content */
+.content_div{
+    display:grid;
+    grid-template-columns: minmax(250px,40%);
+    justify-content: center;
+    gap: 5px;
+
+    overflow-y: auto;
+}
+
+section{
+    border-top: 1px dashed rgb(171, 171, 171);
+    padding: 10px;
+}
+
+section>h1{
+    font-weight: normal;
+}
+
+/* Styling for top container that contains 
+ * page content, page navigation and inventory navigation.
+*/
+
+#top_container{
+    display:grid;
+    grid-template-columns: 15% 85%;
+    grid-template-rows: 10% 90%;
+    height: 100vh;
+}
+
+/* Styling page navigation */
+#page_navigation{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
 }

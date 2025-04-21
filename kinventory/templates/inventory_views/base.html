@@ -5,23 +5,39 @@ Inventory - {{g.user['business_name']}}
 {% endblock %}
 
 {% block body %}
-<nav>
-    <img
-        src="{{url_for('static', filename='favicon.png')}}"
-        id="navbar_image"
-    />
-    <div id="navigation_links">
-        <!--add selected_navlink to to the id of selected/active link-->
-        <a class="navbar_link" id="{% block select_inventory %}{% endblock %}" href="{{url_for('inventory.inventory')}}">Inventory</a>
-        <a class="navbar_link" id="{% block select_supply %}{% endblock %}" href="{{url_for('inventory.supply')}}">Supply</a>
-        <a class="navbar_link" id="{% block select_consumption %}{% endblock %}" href="{{url_for('inventory.consumption')}}">Consumption</a>
-        <a class="navbar_link" id="{% block select_menu %}{% endblock %}" href="{{url_for('inventory.menu')}}">Menu</a>
-        <a class="navbar_link" id="{% block select_analytics %}{% endblock %}" href="{{url_for('inventory.analytics')}}">Analytics</a>
-        <a class="navbar_link" id="{% block select_account %}{% endblock %}" href="{{url_for('inventory.account')}}">Account</a>
-    </div>
-</nav>
 
-{% block content %}
-{% endblock %}
+<div id="top_container">
+    <nav id="inventory_navigation">
+        <img src="{{url_for('static', filename='favicon.png')}}" id="navbar_image" />
+        <div id="navigation_links">
+            <!--add selected_navlink to to the id of selected/active link-->
+            <a class="navbar_link" id="{% block select_inventory %}{% endblock %}"
+                href="{{url_for('inventory.inventory')}}">Inventory</a>
+            <a class="navbar_link" id="{% block select_supply %}{% endblock %}"
+                href="{{url_for('inventory.supply')}}">Supply</a>
+            <a class="navbar_link" id="{% block select_consumption %}{% endblock %}"
+                href="{{url_for('inventory.consumption')}}">Consumption</a>
+            <a class="navbar_link" id="{% block select_menu %}{% endblock %}"
+                href="{{url_for('inventory.menu')}}">Menu</a>
+            <a class="navbar_link" id="{% block select_analytics %}{% endblock %}"
+                href="{{url_for('inventory.analytics')}}">Analytics</a>
+            <a class="navbar_link" id="{% block select_account %}{% endblock %}"
+                href="{{url_for('inventory.account')}}">Account</a>
+        </div>
+    </nav>
+
+    <nav id="page_navigation">
+
+        {% block pagenav %}
+        {% endblock %}
+
+    </nav>
+
+    <div class="content_div">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
 
 {% endblock %}

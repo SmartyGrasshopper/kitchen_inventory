@@ -6,36 +6,52 @@
 
 {% block select_account %}selected_navlink{% endblock %}
 
+{% block pagenav %}
+    <a href="#password_section">Password</a>
+    <a href="#business_name_section">Business Name</a>
+{% endblock %}
+
 {% block content %}
-<div class="content_div">
-    <p>Manage account details for the user - {{g.user['username']}}</p>
 
-    <section>
-        <h1>Password</h1>
-        <p>Your account password.</p>
-        <form method="post">
-            <label for="current_password">Enter current password</label>
-            <input type="password" name="current_password" required/>
-            <label for="new_password">Enter new password</label>
-            <input type="text" name="new_password" minlength="8" required/>
-            <input type="submit" value="Modify" class="outlined_button" name="change_password"/>
-        </form>
-    </section>
+<p>Manage account details for the user - {{g.user['username']}}</p>
 
-    <section>
-        <h1>Business Name</h1>
-        <p>Name of the business (visible to customers).</p>
-        <form method="post">
-            <input type="text" placeholder="{{g.user['business_name']}}" name="business_name" required/>
-            <input type="submit" value="Modify" class="outlined_button" name="change_business_name"/>
-        </form>
-    </section>
+<section id="password_section">
+    <h1>Password</h1>
+    <p>Your account password.</p>
+    <form method="post" action="{{url_for('inventory.account')}}">
+        <label for="current_password">Enter current password</label>
+        <input type="password" name="current_password" required />
+        <label for="new_password">Enter new password</label>
+        <input type="text" name="new_password" minlength="8" required />
+        <input type="submit" value="Modify" class="outlined_button" name="change_password" />
+    </form>
+</section>
 
-    <section>
-        <form action="{{url_for('auth.logout')}}" method="post">
-            <input type="submit" value="Logout" class="solid_button"/>
-        </form>
-    </section>
-</div>
+<section>
+    <h1>Password</h1>
+    <p>Your account password.</p>
+    <form method="post">
+        <label for="current_password">Enter current password</label>
+        <input type="password" name="current_password" required />
+        <label for="new_password">Enter new password</label>
+        <input type="text" name="new_password" minlength="8" required />
+        <input type="submit" value="Modify" class="outlined_button" name="change_password" />
+    </form>
+</section>
+
+<section id="business_name_section">
+    <h1>Business Name</h1>
+    <p>Name of the business (visible to customers).</p>
+    <form method="post" action="{{url_for('inventory.account')}}">
+        <input type="text" placeholder="{{g.user['business_name']}}" name="business_name" required />
+        <input type="submit" value="Modify" class="outlined_button" name="change_business_name" />
+    </form>
+</section>
+
+<section>
+    <form action="{{url_for('auth.logout')}}" method="post">
+        <input type="submit" value="Logout" class="solid_button" />
+    </form>
+</section>
 
 {% endblock %}
