@@ -48,6 +48,7 @@ nav#inventory_navigation{
     gap: 5px;
 
     overflow-y: auto;
+    align-content: start;
 }
 
 section{
@@ -74,10 +75,11 @@ section>h1{
 #page_navigation{
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     overflow-y: auto;
     background-color:  none;
     padding-right: 5px;
+    text-align: center;
 }
 
 #page_navigation>a{
@@ -87,8 +89,4 @@ section>h1{
 
 #page_navigation>a:hover{
     text-decoration: underline;
-}
-
-hr{
-    flex-grow: 1;
 }
