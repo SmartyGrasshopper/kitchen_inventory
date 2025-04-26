@@ -26,6 +26,10 @@ def create_app(test_config = None):
     @app.route('/', methods=('GET',))
     def index():
         return render_template('index.html')
+    
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html')
 
     # registering blue-prints for other views
     from kinventory import auth, inventory

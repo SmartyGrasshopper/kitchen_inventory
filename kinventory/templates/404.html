@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Kitchen Inventory
+{% endblock %}
+
+{% block cssfile %}
+{{url_for('static', filename='/stylesheets/404.css')}}
+{% endblock %}
+
+{% block body %}
+<h1>404</h1>
+<p>
+    There is no route/page matching the requested url. <br>
+    Please check the url again or
+    visit the <a href="{{url_for('index')}}">home</a> page.
+</p>
+{% endblock %}
