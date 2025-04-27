@@ -50,3 +50,12 @@ CREATE TABLE {username}_consumption_records(
     FOREIGN KEY (ingridient_id) REFERENCES {username}_ingridients (id)
 );
 
+
+CREATE VIEW {username}_stocks_view AS 
+    SELECT {username}_ingridients.id AS id, {username}_ingridients.ingridient_name AS ingridient_name,
+    COALESCE(S1.total_quantity,0) AS quantity_available, COALESCE(S1.total_batches,0) AS batches_available,
+    {username}_ingridients.measuring_unit AS measuring_unit
+    FROM {username}_ingridients LEFT JOIN (
+        SELECT ingridient_id, SUM(quantity_available) as total_quantity, COUNT(*) AS total_batches
+        FROM {username}_batches GROUP BY ingridient_id
+    ) AS S1 ON {username}_ingridients.id = S1.ingridient_id;
