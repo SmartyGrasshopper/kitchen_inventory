@@ -24,6 +24,22 @@
         Ingridient wise details of
         the stock present in inventory.
     </p>
+    <table>
+        <thead>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Available Quantity</td>
+            <td>Available Batches</td>
+        </thead>
+        {% for row in stockData %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}} {{row[4]}}</td>
+            <td>{{row[3]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </section>
 
 <section id="add_ingridient_section">

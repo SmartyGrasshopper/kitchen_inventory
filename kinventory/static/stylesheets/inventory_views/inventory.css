@@ -16,3 +16,17 @@ input[type="text"], input[type="password"]{
     border-radius: 0;
     border: 2px solid grey;
 }
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td{
+    border: 1px solid black;
+    padding: 5px;
+}
+
+thead{
+    background-color: rgb(255, 255, 150);
+}

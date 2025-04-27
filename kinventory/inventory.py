@@ -20,8 +20,8 @@ bp = Blueprint('inventory', __name__, url_prefix='/inventory')
 @bp.route("/inventory", methods=('GET', 'POST'))
 @signin_required
 def inventory():
+    db = get_db()
     if(request.method == 'POST'):
-        db = get_db()
         if('add_ingridient' in request.form):
             try:
                 db.execute(
@@ -35,7 +35,8 @@ def inventory():
             else:
                 flash("New ingridient added successfully.")
 
-    return render_template("inventory_views/inventory.html")
+    stockData = db.execute("SELECT * FROM {}_stocks_view".format(g.user['username'])).fetchall()
+    return render_template("inventory_views/inventory.html", stockData=stockData)
 
 @bp.route("/supply", methods=('GET',))
 @signin_required
