@@ -8,7 +8,7 @@ Inventory - {{g.user['business_name']}}
 
 <div id="top_container">
     <nav id="inventory_navigation">
-        <img src="{{url_for('static', filename='favicon.png')}}" id="navbar_image" />
+        <a href="{{url_for('index')}}"><img src="{{url_for('static', filename='favicon.png')}}" id="navbar_image" /></a>
         <div id="navigation_links">
             <!--add selected_navlink to to the id of selected/active link-->
             <a class="navbar_link" id="{% block select_inventory %}{% endblock %}"
