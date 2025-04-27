@@ -2,10 +2,10 @@
 
 form{
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: 50%;
     gap: 5px;
+    justify-content: center;
 }
-
 
 
 input[type="text"], input[type="password"], select{
