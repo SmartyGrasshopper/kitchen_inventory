@@ -4,6 +4,8 @@ from datetime import datetime
 import click
 from flask import current_app, g
 
+from werkzeug.security import generate_password_hash
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
@@ -38,3 +40,22 @@ def add_db_functionality(app):
 
     # add cli commands
     app.cli.add_command(init_db_command)
+
+def create_new_user(username, password, business_name):
+    db = get_db()
+
+    # Adding user to the users table
+    try:
+        db.execute(
+            "INSERT INTO users (username, psword, business_name) VALUES (?,?,?);",
+                (username, generate_password_hash(password), business_name)
+        )
+        db.commit()
+    except db.IntegrityError:
+        return (True, "Error in sign-up: Username already in use. Please select a different username.")
+    
+    # creating all the tables for the user's data
+    with current_app.open_resource("schemas/init_user_tables.sql") as f:
+        db.executescript(f.read().decode('utf8').format(username=username))
+    
+    return (False, "")    # False means no error

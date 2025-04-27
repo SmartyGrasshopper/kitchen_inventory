@@ -6,9 +6,9 @@ from flask import (
 
 import functools
 
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
-from kinventory.database import get_db
+from kinventory.database import get_db, create_new_user
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -42,20 +42,16 @@ def signup():
         password = request.form['password']
         business_name = request.form['business_name']
         
-        db = get_db()
+        error, message = create_new_user(username, password, business_name)
 
-        try:
-            db.execute(
-                "INSERT INTO users (username, psword, business_name) VALUES (?,?,?);",
-                    (username, generate_password_hash(password), business_name)
-            )
-            db.commit()
-        except db.IntegrityError:
-            flash("Error in sign-up: Username already in use. Please select a different username.")
+        if(error):
+            flash(message)
         else:
             flash("Sign-Up successful for the username {}".format(username))
             return redirect(url_for("auth.signin"))
+        db = get_db()
 
+        
     return render_template('auth_views/sign_up.html') 
     
 @bp.route('/logout', methods=('POST',))
