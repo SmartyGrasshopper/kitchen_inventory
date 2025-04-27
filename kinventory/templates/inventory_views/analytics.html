@@ -15,8 +15,12 @@
 <p> Analytics for ingridients to help in decision making.</p>
 
 <form action="{{url_for('inventory.analytics')}}" method="post">
-    <label for="ingridient_select">Please select an ingridient.</label>
-    <input type="text" name="ingridient_select" required/>
+    <label for="ingridient_name">Showing analytics for the ingridient</label>
+    <select name="ingridient_name" required>
+        <option value="" selected disabled hidden>Select</option>
+        <option value="ingridient_1">Ingridient 1</option>
+        <option value="ingridient_2">Ingridient 2</option>
+    </select>
     <input type="submit" value="View Analytics" class="outlined_button" name="select_ingridient"/>
 </form>
 

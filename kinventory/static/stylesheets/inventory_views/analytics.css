@@ -8,7 +8,7 @@ form{
 
 
 
-input[type="text"], input[type="password"]{
+input[type="text"], input[type="password"], select{
     font-family:montserrat;
     font-size: 1rem;
     padding: 0.7rem 0.8rem;
