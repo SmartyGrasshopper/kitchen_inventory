@@ -29,6 +29,13 @@
 <section id="add_ingridient_section">
     <h1>Add Ingridient</h1>
     <p> Add a new ingridient to inventory.</p>
+    <form action="{{url_for('inventory.inventory')}}" method="post">
+        <label for="new_ingridient_name">Enter new ingridient name</label>
+        <input type="text" name="new_ingridient_name" required />
+        <label for="measuring_unit">Enter measuring unit (kg, g, L, pc etc.)</label>
+        <input type="text" name="measuring_unit" required />
+        <input type="submit" class="outlined_button" value="Add" name="add_ingridient"/>
+    </form>
 </section>
 
 <section id="add_batch_section">

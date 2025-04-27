@@ -17,9 +17,24 @@ from kinventory.auth import signin_required, load_logged_in_user
 
 bp = Blueprint('inventory', __name__, url_prefix='/inventory')
 
-@bp.route("/inventory", methods=('GET',))
+@bp.route("/inventory", methods=('GET', 'POST'))
 @signin_required
 def inventory():
+    if(request.method == 'POST'):
+        db = get_db()
+        if('add_ingridient' in request.form):
+            try:
+                db.execute(
+                    "INSERT INTO {}_ingridients (ingridient_name, supply_type, measuring_unit)"
+                    "VALUES (?,?,?)".format(g.user['username']),
+                    (request.form['new_ingridient_name'], "EXTERNAL", request.form['measuring_unit'])
+                )
+                db.commit()
+            except db.IntegrityError:
+                flash("Error: Ingridient name '{}' already in use. Please use a unique ingridient name.".format(request.form['new_ingridient_name']))
+            else:
+                flash("New ingridient added successfully.")
+
     return render_template("inventory_views/inventory.html")
 
 @bp.route("/supply", methods=('GET',))

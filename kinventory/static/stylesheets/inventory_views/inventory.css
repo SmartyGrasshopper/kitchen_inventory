@@ -1,1 +1,18 @@
 @import url("/static/stylesheets/inventory_views/base.css");
+
+form{
+    display: grid;
+    grid-template-columns: 50%;
+    gap: 5px;
+    justify-content: center;
+}
+
+
+
+input[type="text"], input[type="password"]{
+    font-family:montserrat;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0;
+    border: 2px solid grey;
+}
