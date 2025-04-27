@@ -6,8 +6,42 @@
 
 {% block select_analytics %}selected_navlink{% endblock %}
 
-{% block content %}
-This is Analytics page for {{g.user['username']}}.
+{% block pagenav %}
+    <a href="#consumption_section">Consumption</a>
+    <a href="#wastage_section">Wastage</a>
+{% endblock %}
 
-<a href="{{url_for('auth.logout')}}">Logout</a>
+{% block content %}
+<p> Analytics for ingridients to help in decision making.</p>
+
+<form action="{{url_for('inventory.analytics')}}" method="post">
+    <label for="ingridient_select">Please select an ingridient.</label>
+    <input type="text" name="ingridient_select" required/>
+    <input type="submit" value="View Analytics" class="outlined_button" name="select_ingridient"/>
+</form>
+
+<section id="consumption_section">
+    <h1>Consumption</h1>
+    <p>Graph of day wise consumption for selected ingridient.</p>
+    Show "No ingridient selected" when not selected
+    and graph when selected.
+
+    <img src="{{url_for('inventory.consumption_graph', ingridient_name='Chillies')}}">
+</section>
+
+<section id="wastage_section">
+    <h1>Wastage</h1>
+    <p>
+        Graph containing two batch-wise line graphs of
+        following ratios:
+    </p>
+    <ul>
+        <li>expired-quantity to undefective-quantity</li>
+        <li>defective-quantity to total-quantity-received</li>
+    </ul>
+    <p> for the selected ingridient.</p>
+
+    <img src="{{url_for('inventory.wastage_graph', ingridient_name='Chillies')}}">
+</section>
+
 {% endblock %}

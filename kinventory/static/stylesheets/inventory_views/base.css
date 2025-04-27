@@ -15,7 +15,7 @@ a.navbar_link:hover{
 }
 
 a#selected_navlink{
-    background-color: rgb(233, 229, 0);
+    background-color: rgb(250, 176, 112);
     padding: 5px;
 }
 
@@ -57,7 +57,8 @@ section{
 }
 
 section>h1{
-    font-weight: normal;
+    font-weight:600;
+    font-size: 16pt;
 }
 
 /* Styling for top container that contains 

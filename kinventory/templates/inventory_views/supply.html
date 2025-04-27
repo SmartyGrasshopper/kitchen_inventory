@@ -6,8 +6,53 @@
 
 {% block select_supply %}selected_navlink{% endblock %}
 
-{% block content %}
-This is supply page for {{g.user['username']}}.
+{% block pagenav %}
+    <a href="#supply_orders_section">Supply Orders</a>
+    <a href="#self_supply_orders_section">Self Supply Orders</a>
+    <a href="#suppliers_section">Suppliers</a>
+    <a href="#add_supplier_section">Add Supplier</a>
+    <a href="#supply_recommendation_section">Supply Recommendations</a>
+{% endblock %}
 
-<a href="{{url_for('auth.logout')}}">Logout</a>
+{% block content %}
+<p>
+    Features to manage supply of ingridients
+    for the inventory.
+</p>
+
+<section id="supply_orders_section">
+    <h1>Supply Orders</h1>
+    <p>Active supply orders from external suppliers.</p>
+</section>
+
+<section id="self_supply_orders_section">
+    <h1>Self Supply Orders</h1>
+    <p>Active supply orders for self-produced ingridients.</p>
+</section>
+
+<section id="suppliers_section">
+    <h1>Suppliers</h1>
+    <p>
+        List of external suppliers and
+        related payment details.
+    </p>
+</section>
+
+<section id="add_supplier_section">
+    <h1>Add Supplier</h1>
+    <p>
+        Add an external supplier
+        (i.e. a supplier for an externally sourced ingridient).
+    </p>
+</section>
+
+<section id="supply_recommendation_section">
+    <h1><del>Supply Recommendations</del></h1>
+    <p>
+        Recommendations for the supply orders
+        of externally sourced ingridients
+        as well as self produced ingridients.
+    </p>
+</section>
+
 {% endblock %}

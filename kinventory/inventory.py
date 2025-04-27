@@ -1,10 +1,16 @@
 from flask import (
     Blueprint, render_template,
     session, request,
-    flash, redirect, url_for, g
+    flash, redirect, url_for, g,
+    Response
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
+
+import io
+import matplotlib
+matplotlib.use('agg')   # using agg backend so that matplotlib does not create a GUI loop
+import matplotlib.pyplot as plt
 
 from kinventory.database import get_db
 from kinventory.auth import signin_required, load_logged_in_user
@@ -78,3 +84,40 @@ def account():
             flash("Error. No action available for POSTed form at this route.")
 
     return render_template("inventory_views/account.html")
+
+@bp.route("/consumption_graph/<ingridient_name>", methods=('GET',))
+@signin_required
+def consumption_graph(ingridient_name):
+    fig, ax = plt.subplots()
+    x = [1,2,3]
+    y = [5,2,9]
+    ax.plot(x,y)
+    plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_name))
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='webp')
+    buf.seek(0)
+    plt.close(fig)
+
+    return Response(buf.read(), mimetype='image/webp')
+
+@bp.route("/wastage_graph/<ingridient_name>", methods=('GET',))
+@signin_required
+def wastage_graph(ingridient_name):
+    fig, ax = plt.subplots()
+    x = [1,2,3]
+    y1 = [5,2,4]
+    y2 = [2,4,3]
+    ax.plot(x,y1, label="Expiry Percentage")
+    ax.plot(x,y2, label="Defective Percentage")
+    ax.legend()
+    ax.set_xlabel('Batch No.')
+    ax.set_ylabel('Percent')
+    ax.set_title("Wastage analytics for {}\n(Dummy Graph)".format(ingridient_name))
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='webp')
+    buf.seek(0)
+    plt.close(fig)
+
+    return Response(buf.read(), mimetype='image/webp')

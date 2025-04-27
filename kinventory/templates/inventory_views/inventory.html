@@ -6,8 +6,56 @@
 
 {% block select_inventory %}selected_navlink{% endblock %}
 
-{% block content %}
-This is inventory page for {{g.user['username']}}.
+{% block pagenav %}
+<a href="#stock_details_section">Stock Details</a>
+<a href="#add_ingridient_section">Add Ingridient</a>
+<a href="#add_batch_section">Add Batch</a>
+<a href="#dispose_batch_section">Dispose Batch</a>
+<a href="#report_consumption_section">Report Consumption</a>
+<a href="#report_expiry_section">Report Expiry</a>
+{% endblock %}
 
-<a href="{{url_for('auth.logout')}}">Logout</a>
+{% block content %}
+<p> Features to track and manage inventory. </p>
+
+<section id="stock_details_section">
+    <h1>Stock Details</h1>
+    <p>
+        Ingridient wise details of
+        the stock present in inventory.
+    </p>
+</section>
+
+<section id="add_ingridient_section">
+    <h1>Add Ingridient</h1>
+    <p> Add a new ingridient to inventory.</p>
+</section>
+
+<section id="add_batch_section">
+    <h1>Add Batch</h1>
+    <p>Add a batch of an ingridient to the inventory.</p>
+</section>
+
+<section id="dispose_batch_section">
+    <h1>Dispose Batch</h1>
+    <p>Remove a batch of an ingridient from the inventory.</p>
+</section>
+
+<section id="report_consumption_section">
+    <h1>Report Consumption</h1>
+    <p>
+        Report about the consumption of 
+        an ingridient from the inventory.
+    </p>
+</section>
+
+<section id="report_expiry_section">
+    <h1>Report Expiry</h1>
+    <p>
+        Report about some stock of an ingridient
+        getting expired (unfit for use)
+        from an available batch.
+    </p>
+</section>
+
 {% endblock %}
