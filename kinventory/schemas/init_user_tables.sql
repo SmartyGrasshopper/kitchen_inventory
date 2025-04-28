@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS {username}_supply_orders;
 DROP TABLE IF EXISTS {username}_suppliers;
 DROP TABLE IF EXISTS {username}_consumption_records;
 
+DROP VIEW IF EXISTS {username}_stocks_view;
+
 CREATE TABLE {username}_ingridients(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ingridient_name TEXT UNIQUE NOT NULL,
