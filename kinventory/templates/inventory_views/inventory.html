@@ -40,6 +40,9 @@
         </tr>
         {% endfor %}
     </table>
+    {% if not stockData %}
+    <p>No ingridients added to inventory.</p>
+    {% endif %}
 </section>
 
 <section id="add_ingridient_section">
