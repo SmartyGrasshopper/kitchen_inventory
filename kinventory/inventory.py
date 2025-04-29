@@ -55,7 +55,8 @@ def supply():
             else:
                 flash("Supplier added successfully.")
 
-    return render_template("inventory_views/supply.html")
+    supplierInfo = db.execute("SELECT * FROM {}_supplierinfo_view".format(g.user['username'])).fetchall()
+    return render_template("inventory_views/supply.html", supplierInfo=supplierInfo)
 
 @bp.route("/consumption", methods=('GET',))
 @signin_required

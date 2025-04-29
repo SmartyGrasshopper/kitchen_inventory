@@ -36,6 +36,30 @@
         List of external suppliers and
         related payment details.
     </p>
+    <table>
+        <thead>
+            <tr>
+                <td rowspan="2">ID</td>
+                <td rowspan="2">Supplier Name</td>
+                <td colspan="2">Payment Dues</td>
+            </tr>
+            <tr>
+                <td>Total Quantity</td>
+                <td>Total Undefective Quantity</td>
+            </tr>
+        </thead>
+        {% for row in supplierInfo %}
+            <tr>
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% if not supplierInfo %}
+        <p>No suppliers in the database.</p>
+    {% endif %}
 </section>
 
 <section id="add_supplier_section">

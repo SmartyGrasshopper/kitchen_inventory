@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS {username}_suppliers;
 DROP TABLE IF EXISTS {username}_consumption_records;
 
 DROP VIEW IF EXISTS {username}_stocks_view;
+DROP VIEW IF EXISTS {username}_supplierinfo_view;
 
 CREATE TABLE {username}_ingridients(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +27,6 @@ CREATE TABLE {username}_supply_orders(
     consumption_duration INTEGER NOT NULL,
     supplier_id INTEGER NOT NULL,
     rate FLOAT NOT NULL,
-    order_status TEXT NOT NULL,
     FOREIGN KEY (ingridient_id) REFERENCES {username}_ingridients (id),
     FOREIGN KEY (supplier_id) REFERENCES {username}_suppliers (id)
 );
@@ -37,6 +37,7 @@ CREATE TABLE {username}_batches(
     supply_order_id INTEGER NOT NULL,
     arrival_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     disposal_date TIMESTAMP,
+    payment_date TIMESTAMP,
     quantity_initial FLOAT NOT NULL,
     quantity_defective FLOAT NOT NULL,
     quantity_available FLOAT NOT NULL,
@@ -54,9 +55,12 @@ CREATE TABLE {username}_consumption_records(
 
 
 CREATE VIEW {username}_stocks_view AS 
-    SELECT {username}_ingridients.id AS id, {username}_ingridients.ingridient_name AS ingridient_name,
-    COALESCE(S1.total_quantity,0) AS quantity_available, COALESCE(S1.total_batches,0) AS batches_available,
-    {username}_ingridients.measuring_unit AS measuring_unit
+    SELECT 
+        {username}_ingridients.id AS id, 
+        {username}_ingridients.ingridient_name AS ingridient_name,
+        COALESCE(S1.total_quantity,0) AS quantity_available,
+        COALESCE(S1.total_batches,0) AS batches_available,
+        {username}_ingridients.measuring_unit AS measuring_unit
     FROM {username}_ingridients 
     LEFT JOIN (
         SELECT ingridient_id, SUM(quantity_available) as total_quantity, COUNT(*) AS total_batches
@@ -65,3 +69,23 @@ CREATE VIEW {username}_stocks_view AS
         GROUP BY ingridient_id
     ) AS S1 
     ON {username}_ingridients.id = S1.ingridient_id;
+
+CREATE VIEW {username}_supplierinfo_view AS
+    SELECT 
+        suppliers.id AS id, 
+        suppliers.supplier_name AS supplier_name,
+        COALESCE(supply_details.pwd,0) AS payment_with_defective,
+        COALESCE(supply_details.pwod,0) AS payment_without_defective
+    FROM {username}_suppliers AS suppliers
+    LEFT JOIN (
+        SELECT 
+            supply_orders.supplier_id AS supplier_id,
+            SUM(_batches.quantity_initial * supply_orders.rate) AS pwd,
+            SUM((_batches.quantity_initial - _batches.quantity_defective) * supply_orders.rate) pwod
+        FROM {username}_batches AS _batches
+        LEFT JOIN {username}_supply_orders AS supply_orders
+        ON _batches.supply_order_id = supply_orders.id
+        WHERE _batches.payment_date = NULL
+        GROUP BY supply_orders.supplier_id
+    ) AS supply_details
+    ON suppliers.id = supply_details.supplier_id;
