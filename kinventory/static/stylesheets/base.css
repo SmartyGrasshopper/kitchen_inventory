@@ -20,6 +20,7 @@ a{
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s ease;
+    font-family: montserrat;
 }
 .solid_button:hover{
     background-color: rgb(227, 61, 0);
@@ -33,6 +34,7 @@ a{
     text-decoration: none;
     font-size: 1rem;
     transition: background-color 0.2s ease;
+    font-family: montserrat;
 }
 .outlined_button:hover{
     border-color: rgb(189, 50, 0);

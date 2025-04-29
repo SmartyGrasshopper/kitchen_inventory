@@ -2,7 +2,7 @@
 
 @import url("/static/stylesheets/inventory_views/base.css");
 
-form{
+section > form{
     display: grid;
     grid-template-columns: 50%;
     gap: 5px;
@@ -32,4 +32,18 @@ td{
 
 thead{
     background-color: rgb(255, 255, 150);
+}
+
+input.table_actions{
+    font-family: montserrat;
+    background-color: none;
+    cursor: pointer;
+    background: none;
+    border: 1px solid grey;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+input.table_actions:hover{
+    background-color: whitesmoke;
 }

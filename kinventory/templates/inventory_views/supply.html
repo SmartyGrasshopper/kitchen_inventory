@@ -7,11 +7,12 @@
 {% block select_supply %}selected_navlink{% endblock %}
 
 {% block pagenav %}
-    <a href="#supply_orders_section">Supply Orders</a>
-    <!--<a href="#self_supply_orders_section">Self Supply Orders</a>-->
-    <a href="#suppliers_section">Suppliers</a>
-    <a href="#add_supplier_section">Add Supplier</a>
-    <a href="#supply_recommendation_section">Supply Recommendations</a>
+<a href="#supply_orders_section">Supply Orders</a>
+<!--<a href="#self_supply_orders_section">Self Supply Orders</a>-->
+<a href="#add_supply_order">Add Order</a>
+<a href="#suppliers_section">Suppliers</a>
+<a href="#add_supplier_section">Add Supplier</a>
+<a href="#supply_recommendation_section">Supply Recommendations</a>
 {% endblock %}
 
 {% block content %}
@@ -30,6 +31,10 @@
     <p>Active supply orders for self-produced ingridients.</p>
 </section> -->
 
+<section id="add_supply_order">
+    <h1>Add Order</h1>
+    <p>Add details about a supply order you have confirmed/given to a supplier.</p>
+</section>
 <section id="suppliers_section">
     <h1>Suppliers</h1>
     <p>
@@ -42,6 +47,7 @@
                 <td rowspan="2">ID</td>
                 <td rowspan="2">Supplier Name</td>
                 <td colspan="2">Payment Dues</td>
+                <td rowspan="2">Actions</td>
             </tr>
             <tr>
                 <td>Total Quantity</td>
@@ -49,16 +55,22 @@
             </tr>
         </thead>
         {% for row in supplierInfo %}
-            <tr>
-                <td>{{row[0]}}</td>
-                <td>{{row[1]}}</td>
-                <td>{{row[2]}}</td>
-                <td>{{row[3]}}</td>
-            </tr>
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>
+                <form action="{{url_for('inventory.supply')}}" method="post">
+                    <input type="hidden" name="supplier_id" value="{{row[0]}}"/>
+                    <input type="submit" name="settle_payment" value="Mark Settled" class="table_actions"/>
+                </form>
+            </td>
+        </tr>
         {% endfor %}
     </table>
     {% if not supplierInfo %}
-        <p>No suppliers in the database.</p>
+    <p>No suppliers in the database.</p>
     {% endif %}
 </section>
 
@@ -70,8 +82,8 @@
     </p>
     <form action="{{url_for('inventory.supply')}}" method="post">
         <label for="supplier_name">Enter supplier name</label>
-        <input type="text" name="supplier_name" minlength="1" required/>
-        <input type="submit" name="add_supplier" class="outlined_button" required/>
+        <input type="text" name="supplier_name" minlength="1" required />
+        <input type="submit" name="add_supplier" class="outlined_button" required />
     </form>
 </section>
 
