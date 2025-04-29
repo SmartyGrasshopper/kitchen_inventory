@@ -2,7 +2,7 @@ from flask import (
     Blueprint, render_template,
     session, request,
     flash, redirect, url_for, g,
-    Response
+    Response, current_app
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -54,6 +54,16 @@ def supply():
                 flash("Error: Supplier name '{}' is already in use. Please use a unique name.".format(request.form['supplier_name']))
             else:
                 flash("Supplier added successfully.")
+        if('settle_payment' in request.form):
+            try:
+                with current_app.open_resource('schemas/settle_payment.sql') as f:
+                    db.executescript(f.read().decode('utf8').format(
+                        username=g.user['username'], supplier_id=request.form['supplier_id']))
+                db.commit()                
+            except:
+                flash("Some error occured.")
+            else:
+                flash("Successfully marked-settled the pending payments of supplier with id {}.".format(request.form['supplier_id']))
 
     supplierInfo = db.execute("SELECT * FROM {}_supplierinfo_view".format(g.user['username'])).fetchall()
     return render_template("inventory_views/supply.html", supplierInfo=supplierInfo)
