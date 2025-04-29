@@ -105,10 +105,14 @@ def account():
 @signin_required
 def consumption_graph(ingridient_name):
     fig, ax = plt.subplots()
-    x = [1,2,3]
-    y = [5,2,9]
-    ax.plot(x,y)
+    x = [-4,-3,-2,-1]
+    y = [8,7.8,9,8.5]
+    ax.plot(x,y, label="Past", color="#5555FF")
+    ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
     plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_name))
+    plt.legend()
+    ax.set_xlabel("Day")
+    ax.set_ylabel("Consumption (in kg)")
 
     buf = io.BytesIO()
     plt.savefig(buf, format='webp')
