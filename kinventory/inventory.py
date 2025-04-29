@@ -38,9 +38,23 @@ def inventory():
     stockData = db.execute("SELECT * FROM {}_stocks_view".format(g.user['username'])).fetchall()
     return render_template("inventory_views/inventory.html", stockData=stockData)
 
-@bp.route("/supply", methods=('GET',))
+@bp.route("/supply", methods=('GET', 'POST'))
 @signin_required
 def supply():
+    db = get_db()
+    if(request.method == 'POST'):
+        if('add_supplier' in request.form):
+            try:
+                db.execute(
+                    "INSERT INTO {username}_suppliers (supplier_name) VALUES (?);".format(username=g.user['username']),
+                    (request.form['supplier_name'],)
+                )
+                db.commit()
+            except db.IntegrityError:
+                flash("Error: Supplier name '{}' is already in use. Please use a unique name.".format(request.form['supplier_name']))
+            else:
+                flash("Supplier added successfully.")
+
     return render_template("inventory_views/supply.html")
 
 @bp.route("/consumption", methods=('GET',))

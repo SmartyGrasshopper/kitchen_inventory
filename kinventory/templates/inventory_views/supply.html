@@ -44,6 +44,11 @@
         Add an external supplier
         (i.e. a supplier for an externally sourced ingridient).
     </p>
+    <form action="{{url_for('inventory.supply')}}" method="post">
+        <label for="supplier_name">Enter supplier name</label>
+        <input type="text" name="supplier_name" minlength="1" required/>
+        <input type="submit" name="add_supplier" class="outlined_button" required/>
+    </form>
 </section>
 
 <section id="supply_recommendation_section">
