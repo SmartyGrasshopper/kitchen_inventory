@@ -5,7 +5,7 @@ medium businesses to help manage
 their kitchen inventory.
 
 ![Index Page](gallery/index_page.png)
-![Inventory Page](gallery/inventory_page.png)
+![Supply Page](gallery/supply_page.png)
 
 ## !! Work in progress !!
 
