@@ -48,7 +48,7 @@
 <section id="add_ingridient_section">
     <h1>Add Ingridient</h1>
     <p> Add a new ingridient to inventory.</p>
-    <form action="{{url_for('inventory.inventory')}}" method="post">
+    <form action="{{url_for('inventory.inventory')}}" method="post" class="double_columned">
         <label for="new_ingridient_name">Enter new ingridient name</label>
         <input type="text" name="new_ingridient_name" required />
         <label for="measuring_unit">Enter measuring unit (kg, g, L, pc etc.)</label>
@@ -60,7 +60,7 @@
 <section id="add_batch_section">
     <h1>Add Batch</h1>
     <p>Add a batch of an ingridient to the inventory.</p>
-    <form action="{{url_for('inventory.inventory')}}" method="post">
+    <form action="{{url_for('inventory.inventory')}}" method="post" class="double_columned">
         <label for="ingridient_id">Select ingridient</label>
         <select name="ingridient_id" required>
             <option value="" selected disabled hidden>Select</option>
@@ -101,6 +101,20 @@
         Report about the consumption of 
         an ingridient from the inventory.
     </p>
+    <form action="{{url_for('inventory.inventory')}}" method="post" class="double_columned">
+        <label for="ingridient_id">Select ingridient</label>
+        <select name="ingridient_id" required>
+            <option value="" selected disabled hidden>Select</option>
+            {% for row in ingridientsList %}
+            <option value="{{row[0]}}">{{row[1]}} ({{row[2]}})</option>
+            {% endfor %}
+        </select>
+
+        <label for="quantity">Enter consumption quantity</label>
+        <input type="number" step="any" name="quantity" required />
+
+        <input type="submit" name="report_consumption" class="outlined_button" value="Report" />
+    </form>
 </section>
 
 <section id="report_expiry_section">

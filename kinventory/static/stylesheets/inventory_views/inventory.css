@@ -7,14 +7,18 @@ form{
     justify-content: center;
 }
 
+form.double_columned{
+    display: grid;
+    grid-template-columns: 30% 50%;
+    row-gap: 5px;
+    column-gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
 
-
-input[type="text"], input[type="password"]{
-    font-family:montserrat;
-    font-size: 1rem;
-    padding: 0.7rem 0.8rem;
-    border-radius: 0;
-    border: 2px solid grey;
+form.double_columned>.outlined_button{
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 
 table{

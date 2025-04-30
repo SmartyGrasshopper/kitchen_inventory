@@ -60,7 +60,7 @@
 <section id="add_supply_order">
     <h1>Add Order</h1>
     <p>Add details about a supply order you have confirmed/given to a supplier.</p>
-    <form action="{{url_for('inventory.supply')}}" method="post">
+    <form action="{{url_for('inventory.supply')}}" method="post" class="double_columned">
 
         <label for="ingridient_id">Select ingridient</label>
         <select name="ingridient_id" required>
