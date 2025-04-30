@@ -57,7 +57,28 @@ def inventory():
                 else:
                     flash('Batch successfully added.')
         elif('dispose_batch' in request.form):
-            flash("Attempt to dispose batch")
+            batch_id = request.form['batch_id']
+            batchDetails = db.execute(
+                "SELECT * FROM {}_batches WHERE id = {};".format(g.user['username'], batch_id)
+            ).fetchone()
+
+            if(not batchDetails):
+                flash("Alert: Batch ID {} does not exist.".format(batch_id))
+            elif(batchDetails['disposal_date'] != None):
+                flash("Alert: Batch ID {} already disposed on {}.".format(batch_id, batchDetails['disposal_date']))
+            else:
+                try:
+                    db.execute(
+                        "UPDATE {}_batches "
+                        "SET disposal_date = CURRENT_TIMESTAMP "
+                        "WHERE id = {};".format(g.user['username'], batch_id)
+                    )
+                except:
+                    flash('Error: Some error occured. Batch ID {} not disposed.'.format(batch_id))
+                else:
+                    db.commit()
+                    flash("Success: Batch ID {} disposed.".format(batch_id))
+
         else:
             flash('No functionality to handle submitted form.')
 
