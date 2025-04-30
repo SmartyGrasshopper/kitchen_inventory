@@ -68,3 +68,10 @@ a{
     font-weight: bold;
 }
 
+li.flash_messages{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 5px;
+}
+

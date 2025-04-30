@@ -31,17 +31,17 @@ def inventory():
                 )
                 db.commit()
             except db.IntegrityError:
-                flash("Error: Ingridient name '{}' already in use. Please use a unique ingridient name.".format(request.form['new_ingridient_name']))
+                flash("Ingridient name '{}' already in use. Please use a unique ingridient name.".format(request.form['new_ingridient_name']), 'info')
             else:
-                flash("New ingridient added successfully.")
+                flash("New ingridient added successfully.", 'success')
         elif('add_batch' in request.form):
             supplyOrder = db.execute("SELECT * FROM {}_supply_orders WHERE id = ?;".format(g.user['username']),(request.form['supply_order_id'],)).fetchone()
             if(not supplyOrder):
-                flash('Error: Invalid supply-order ID used. Please enter a valid ID.')
+                flash('Invalid supply-order ID used. Please enter a valid ID.', 'error')
             elif(supplyOrder[1] != float(request.form['ingridient_id'])):
-                flash('Error: Selected ingridient does not match with ingridient of supply-order ID.')
+                flash('Selected ingridient does not match with ingridient of supply-order ID.', 'error')
             elif(float(request.form['quantity_defective']) > float(request.form['quantity_initial'])):
-                flash('Error: Defective quantity cannot be greater than quantity received.')
+                flash('Defective quantity cannot be greater than quantity received.', 'error')
             else:
                 try:
                     db.execute(
@@ -53,9 +53,9 @@ def inventory():
                     )
                     db.commit()
                 except:
-                    flash('Some error occured.')
+                    flash('Some error occured.', 'error')
                 else:
-                    flash('Batch successfully added.')
+                    flash('Batch successfully added.', 'success')
         elif('dispose_batch' in request.form):
             batch_id = request.form['batch_id']
             batchDetails = db.execute(
@@ -63,9 +63,9 @@ def inventory():
             ).fetchone()
 
             if(not batchDetails):
-                flash("Alert: Batch ID {} does not exist.".format(batch_id))
+                flash("Batch ID {} does not exist.".format(batch_id), 'info')
             elif(batchDetails['disposal_date'] != None):
-                flash("Alert: Batch ID {} already disposed on {}.".format(batch_id, batchDetails['disposal_date']))
+                flash("Batch ID {} already disposed on {}.".format(batch_id, batchDetails['disposal_date']), 'info')
             else:
                 try:
                     db.execute(
@@ -74,13 +74,13 @@ def inventory():
                         "WHERE id = {};".format(g.user['username'], batch_id)
                     )
                 except:
-                    flash('Error: Some error occured. Batch ID {} not disposed.'.format(batch_id))
+                    flash('Some error occured. Batch ID {} not disposed.'.format(batch_id), 'error')
                 else:
                     db.commit()
-                    flash("Success: Batch ID {} disposed.".format(batch_id))
+                    flash("Batch ID {} disposed.".format(batch_id), 'success')
 
         else:
-            flash('No functionality to handle submitted form.')
+            flash('No functionality to handle submitted form.', 'error')
 
     stockData = db.execute("SELECT * FROM {}_stocks_view".format(g.user['username'])).fetchall()
     ingridientsList = db.execute("SELECT id, ingridient_name, measuring_unit FROM {}_ingridients;".format(g.user['username'])).fetchall()
@@ -100,9 +100,9 @@ def supply():
                 )
                 db.commit()
             except db.IntegrityError:
-                flash("Error: Supplier name '{}' is already in use. Please use a unique name.".format(request.form['supplier_name']))
+                flash("Supplier name '{}' is already in use. Please use a unique name.".format(request.form['supplier_name']), 'info')
             else:
-                flash("Supplier added successfully.")
+                flash("Supplier added successfully.", 'success')
         elif('settle_payment' in request.form):
             try:
                 with current_app.open_resource('schemas/settle_payment.sql') as f:
@@ -110,9 +110,9 @@ def supply():
                         username=g.user['username'], supplier_id=request.form['supplier_id']))
                 db.commit()                
             except:
-                flash("Some error occured.")
+                flash("Some error occured.", 'error')
             else:
-                flash("Successfully marked the pending payments of supplier-id {} as settled.".format(request.form['supplier_id']))
+                flash("Marked the pending payments of supplier-id {} as settled.".format(request.form['supplier_id']), 'success')
         elif('add_order' in request.form):
             try:
                 db.execute(
@@ -122,9 +122,9 @@ def supply():
                 )
                 db.commit()
             except db.IntegrityError:
-                flash("Error: Ingridient name already in use. Please use a unique ingridient name.")
+                flash("Ingridient name already in use. Please use a unique ingridient name.", 'info')
             else:
-                flash("Supply order added successfully.")
+                flash("Supply order added successfully.", 'success')
         else:
             pass
     
@@ -173,7 +173,7 @@ def account():
             )
             db.commit()
 
-            flash("Business Name updated successfully.")
+            flash("Business Name updated successfully.", 'success')
 
             load_logged_in_user()  #updating the details stored in g-object before proceeding
             
@@ -191,14 +191,14 @@ def account():
 
                 session.clear()   # signing/logging out
 
-                flash("Password updated successfully. Please sign-in again.")
+                flash("Password updated successfully. Please sign-in again.", 'success')
 
                 return redirect(url_for('auth.signin'))
 
             else:
-                flash("Failed to change password. Invalid current-password entered.")
+                flash("Failed to change password. Invalid current-password entered.", 'error')
         else:
-            flash("Error. No action available for POSTed form at this route.")
+            flash("Error. No action available for POSTed form at this route.", 'error')
 
     return render_template("inventory_views/account.html")
 

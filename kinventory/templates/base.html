@@ -21,11 +21,22 @@
         </script>
     </head>
     <body> 
-        {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             <ul id="flash">
-                {% for message in messages %}
-                    <li>{{message}}</li>
+                {% for category, message in messages %}
+                    <li class="flash_messages">
+                        {% if category == 'success' %}
+                        <img src="{{url_for('static', filename = '/icons/check.png')}}"/>
+                        {% elif category == 'info' %}
+                        <img src="{{url_for('static', filename= '/icons/info.png')}}"/>
+                        {% elif category == 'error' %}
+                        <img src="{{url_for('static', filename= '/icons/error.png')}}"/>
+                        {% else %}
+                        <img src="{{url_for('static', filename= '/icons/info.png')}}"/>
+                        {% endif %}
+                        {{message}}
+                    </li>
                 {% endfor %}
             </ul>
             {% endif %}

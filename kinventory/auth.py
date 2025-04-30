@@ -25,9 +25,9 @@ def signin():
         ).fetchone()
 
         if user is None:
-            flash('User "{}" does not exit.'.format(username))
+            flash('User "{}" does not exit.'.format(username), 'info')
         elif not check_password_hash(user['psword'], password):
-            flash('Incorrect password.')
+            flash('Incorrect password.', 'info')
         else:
             session.clear()
             session['username'] = username
@@ -45,9 +45,9 @@ def signup():
         error, message = create_new_user(username, password, business_name)
 
         if(error):
-            flash(message)
+            flash(message, 'error')
         else:
-            flash("Sign-Up successful for the username {}".format(username))
+            flash("Sign-Up successful for the username {}".format(username), 'success')
             return redirect(url_for("auth.signin"))
         db = get_db()
 
@@ -57,7 +57,7 @@ def signup():
 @bp.route('/logout', methods=('POST',))
 def logout():
     session.clear()
-    flash('Logged-out successfully.')
+    flash('Logged-out successfully.', 'success')
     return redirect(url_for('index'))
 
 @bp.before_app_request
@@ -82,7 +82,7 @@ def signin_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-             flash("Last visited page requires sign-in.")
+             flash("Last visited page requires sign-in.", 'info')
              return redirect(url_for('auth.signin'))
         return view(**kwargs)
     return wrapped_view
