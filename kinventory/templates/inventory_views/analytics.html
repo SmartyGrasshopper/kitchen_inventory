@@ -18,8 +18,9 @@
     <label for="ingridient_name">Showing analytics for the ingridient</label>
     <select name="ingridient_name" required>
         <option value="" selected disabled hidden>Select</option>
-        <option value="ingridient_1">Ingridient 1</option>
-        <option value="ingridient_2">Ingridient 2</option>
+        {% for row in ingridientsList %}
+        <option value="{{row[0]}}">{{row[1]}}</option>
+        {% endfor %}
     </select>
     <input type="submit" value="View Analytics" class="outlined_button" name="select_ingridient"/>
 </form>

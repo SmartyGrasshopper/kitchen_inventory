@@ -47,3 +47,12 @@ input.table_actions{
 input.table_actions:hover{
     background-color: whitesmoke;
 }
+
+input[type="text"], input[type="password"], input[type="number"],
+input[type="date"], select{
+    font-family:montserrat;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0;
+    border: 2px solid grey;
+}

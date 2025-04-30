@@ -54,7 +54,7 @@ def supply():
                 flash("Error: Supplier name '{}' is already in use. Please use a unique name.".format(request.form['supplier_name']))
             else:
                 flash("Supplier added successfully.")
-        if('settle_payment' in request.form):
+        elif('settle_payment' in request.form):
             try:
                 with current_app.open_resource('schemas/settle_payment.sql') as f:
                     db.executescript(f.read().decode('utf8').format(
@@ -64,9 +64,31 @@ def supply():
                 flash("Some error occured.")
             else:
                 flash("Successfully marked-settled the pending payments of supplier with id {}.".format(request.form['supplier_id']))
+        elif('add_order' in request.form):
+            try:
+                db.execute(
+                    "INSERT INTO {}_supply_orders (ingridient_id, quantity, consumption_start, order_date, supplier_id, rate) VALUES (?,?,?,CURRENT_TIMESTAMP,?,?);".format(g.user['username']),
+                    (request.form['ingridient_id'], request.form['quantity'], '{} 00:00:00'.format(request.form['consumption_start_date']),
+                     request.form['supplier_id'], request.form['rate'])
+                )
+                db.commit()
+            except db.IntegrityError:
+                flash("Error: Ingridient name already in use. Please use a unique ingridient name.")
+            else:
+                flash("Supply order added successfully.")
+        else:
+            pass
+    
 
     supplierInfo = db.execute("SELECT * FROM {}_supplierinfo_view".format(g.user['username'])).fetchall()
-    return render_template("inventory_views/supply.html", supplierInfo=supplierInfo)
+    ingridientsList = db.execute("SELECT id, ingridient_name, measuring_unit FROM {}_ingridients;".format(g.user['username'])).fetchall()
+    suppliersList = db.execute("SELECT id, supplier_name FROM {}_suppliers;".format(g.user['username']))
+    activeSupplyOrders = db.execute("SELECT * FROM {}_supplyorders_view;".format(g.user['username']))
+    return render_template(
+        "inventory_views/supply.html", 
+        supplierInfo=supplierInfo, ingridientsList=ingridientsList,
+        suppliersList=suppliersList, activeSupplyOrders=activeSupplyOrders
+        )
 
 @bp.route("/consumption", methods=('GET',))
 @signin_required
@@ -81,7 +103,12 @@ def menu():
 @bp.route("/analytics", methods=('GET',))
 @signin_required
 def analytics():
-    return render_template("inventory_views/analytics.html")
+    db = get_db()
+
+    ingridientsList = db.execute(
+        "SELECT id, ingridient_name FROM {}_ingridients;".format(g.user['username'])
+    ).fetchall()
+    return render_template("inventory_views/analytics.html", ingridientsList=ingridientsList)
 
 @bp.route("/account", methods=('GET', 'POST'))
 @signin_required

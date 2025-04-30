@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS {username}_consumption_records;
 
 DROP VIEW IF EXISTS {username}_stocks_view;
 DROP VIEW IF EXISTS {username}_supplierinfo_view;
+DROP VIEW IF EXISTS {username}_supplyorders_view;
 
 CREATE TABLE {username}_ingridients(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,7 +25,7 @@ CREATE TABLE {username}_supply_orders(
     ingridient_id INTEGER NOT NULL,
     quantity FLOAT NOT NULL,
     consumption_start TIMESTAMP NOT NULL,
-    consumption_duration INTEGER NOT NULL,
+    order_date TIMESTAMP NOT NULL,
     supplier_id INTEGER NOT NULL,
     rate FLOAT NOT NULL,
     FOREIGN KEY (ingridient_id) REFERENCES {username}_ingridients (id),
@@ -81,7 +82,7 @@ CREATE VIEW {username}_supplierinfo_view AS
         SELECT 
             supply_orders.supplier_id AS supplier_id,
             SUM(_batches.quantity_initial * supply_orders.rate) AS pwd,
-            SUM((_batches.quantity_initial - _batches.quantity_defective) * supply_orders.rate) pwod
+            SUM((_batches.quantity_initial - _batches.quantity_defective) * supply_orders.rate) AS pwod
         FROM {username}_batches AS _batches
         LEFT JOIN {username}_supply_orders AS supply_orders
         ON _batches.supply_order_id = supply_orders.id
@@ -89,3 +90,19 @@ CREATE VIEW {username}_supplierinfo_view AS
         GROUP BY supply_orders.supplier_id
     ) AS supply_details
     ON suppliers.id = supply_details.supplier_id;
+
+CREATE VIEW {username}_supplyorders_view AS
+    SELECT
+        {username}_supply_orders.id AS id,
+        {username}_ingridients.ingridient_name AS ingridient_name,
+        {username}_ingridients.measuring_unit AS measuring_unit,
+        {username}_supply_orders.quantity AS quantity,
+        {username}_supply_orders.consumption_start AS consumption_start,
+        {username}_supply_orders.order_date AS order_date,
+        {username}_suppliers.supplier_name AS supplier_name,
+        {username}_supply_orders.rate AS rate
+    FROM {username}_supply_orders
+    LEFT JOIN {username}_suppliers ON {username}_supply_orders.supplier_id = {username}_suppliers.id
+    LEFT JOIN {username}_ingridients ON {username}_supply_orders.ingridient_id = {username}_ingridients.id
+    WHERE {username}_supply_orders.consumption_start > CURRENT_TIMESTAMP
+    ORDER BY {username}_supply_orders.consumption_start;

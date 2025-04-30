@@ -23,7 +23,33 @@
 
 <section id="supply_orders_section">
     <h1>Supply Orders</h1>
-    <p>Active supply orders from external suppliers.</p>
+    <p>
+        Active supply orders from external suppliers
+        (orders where consumption date yet to arrive).
+    </p>
+
+    <table>
+        <thead>
+            <td>ID</td>
+            <td>Ingridient</td>
+            <td>Quantity</td>
+            <td>Consumption Date</td>
+            <td>Order Date</td>
+            <td>Supplier</td>
+            <td>Rate</td>
+        </thead>
+        {% for row in activeSupplyOrders %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[3]}} {{row[2]}}</td>
+            <td>{{row[4]}}</td>
+            <td>{{row[5]}}</td>
+            <td>{{row[6]}}</td>
+            <td>{{row[7]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </section>
 
 <!--<section id="self_supply_orders_section">
@@ -34,7 +60,37 @@
 <section id="add_supply_order">
     <h1>Add Order</h1>
     <p>Add details about a supply order you have confirmed/given to a supplier.</p>
+    <form action="{{url_for('inventory.supply')}}" method="post">
+
+        <label for="ingridient_id">Select ingridient</label>
+        <select name="ingridient_id" required>
+            <option value="" selected disabled hidden>Select</option>
+            {% for row in ingridientsList %}
+            <option value="{{row[0]}}">{{row[1]}} ({{row[2]}})</option>
+            {% endfor %}
+        </select>
+
+        <label for="quantity">Enter quantity (in ingridient's unit)</label>
+        <input type="number" step="any" name="quantity" required />
+
+        <label for="supplier_id">Select supplier</label>
+        <select name="supplier_id" required>
+            <option value="" selected disabled hidden>Select</option>
+            {% for row in suppliersList %}
+            <option value="{{row[0]}}">{{row[1]}}</option>
+            {% endfor %}
+        </select>
+
+        <label for="rate">Enter rate (as Rs. per unit)</label>
+        <input type="number" step="any" name="rate" required />
+
+        <label for="consumption_start_date">Enter consumption-start date</label>
+        <input type="date" name="consumption_start_date" required />
+
+        <input type="submit" class="outlined_button" name="add_order" value="Add" />
+    </form>
 </section>
+
 <section id="suppliers_section">
     <h1>Suppliers</h1>
     <p>
@@ -47,7 +103,7 @@
                 <td rowspan="2">ID</td>
                 <td rowspan="2">Supplier Name</td>
                 <td colspan="3">Payment Dues</td>
-                
+
             </tr>
             <tr>
                 <td>Total Supply</td>
@@ -63,8 +119,8 @@
             <td>{{row[3]}}</td>
             <td>
                 <form action="{{url_for('inventory.supply')}}" method="post">
-                    <input type="hidden" name="supplier_id" value="{{row[0]}}"/>
-                    <input type="submit" name="settle_payment" value="Mark Settled" class="table_actions"/>
+                    <input type="hidden" name="supplier_id" value="{{row[0]}}" />
+                    <input type="submit" name="settle_payment" value="Mark Settled" class="table_actions" />
                 </form>
             </td>
         </tr>
@@ -84,7 +140,7 @@
     <form action="{{url_for('inventory.supply')}}" method="post">
         <label for="supplier_name">Enter supplier name</label>
         <input type="text" name="supplier_name" minlength="1" required />
-        <input type="submit" name="add_supplier" class="outlined_button" required />
+        <input type="submit" name="add_supplier" class="outlined_button" value="Submit" required />
     </form>
 </section>
 
