@@ -78,6 +78,17 @@ def inventory():
                 else:
                     db.commit()
                     flash("Batch ID {} disposed.".format(batch_id), 'success')
+        elif('report_consumption' in request.form):
+            ingridient_id = request.form['ingridient_id']
+            quantity = request.form['quantity']
+
+            # check if enough quantity present
+            # if yes, do two things
+            # (a) reduce that quantity from availability,
+            #     probably starting with the oldest batch.
+            # (b) add the consumed quantity to consumption
+            #     records against ingridient and today's date.
+            flash("Report consumption not implemented yet.", "info")
 
         else:
             flash('No functionality to handle submitted form.', 'error')
