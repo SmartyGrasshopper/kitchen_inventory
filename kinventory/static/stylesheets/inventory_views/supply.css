@@ -10,15 +10,6 @@ section > form{
 }
 
 
-
-input[type="text"], input[type="password"]{
-    font-family:montserrat;
-    font-size: 1rem;
-    padding: 0.7rem 0.8rem;
-    border-radius: 0;
-    border: 2px solid grey;
-}
-
 table{
     width: 100%;
     border-collapse: collapse;

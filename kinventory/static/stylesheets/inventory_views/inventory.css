@@ -31,3 +31,12 @@ td{
 thead{
     background-color: rgb(255, 255, 150);
 }
+
+input[type="text"], input[type="password"], input[type="number"],
+input[type="date"], select{
+    font-family:montserrat;
+    font-size: 1rem;
+    padding: 0.7rem 0.8rem;
+    border-radius: 0;
+    border: 2px solid grey;
+}

@@ -34,9 +34,35 @@ def inventory():
                 flash("Error: Ingridient name '{}' already in use. Please use a unique ingridient name.".format(request.form['new_ingridient_name']))
             else:
                 flash("New ingridient added successfully.")
+        elif('add_batch' in request.form):
+            supplyOrder = db.execute("SELECT * FROM {}_supply_orders WHERE id = ?;".format(g.user['username']),(request.form['supply_order_id'],)).fetchone()
+            if(not supplyOrder):
+                flash('Error: Invalid supply-order ID used. Please enter a valid ID.')
+            elif(supplyOrder[1] != float(request.form['ingridient_id'])):
+                flash('Error: Selected ingridient does not match with ingridient of supply-order ID.')
+            elif(float(request.form['quantity_defective']) > float(request.form['quantity_initial'])):
+                flash('Error: Defective quantity cannot be greater than quantity received.')
+            else:
+                try:
+                    db.execute(
+                        "INSERT INTO {username}_batches (ingridient_id, supply_order_id, arrival_date,"
+                        "quantity_initial, quantity_defective, quantity_available, quantity_expired)"
+                        "VALUES (?,?,?,?,?,?,0);".format(username=g.user['username']),
+                        (request.form['ingridient_id'], request.form['supply_order_id'], '{} 00:00:00'.format(request.form['arrival_date']),
+                         request.form['quantity_initial'], request.form['quantity_defective'], float(request.form['quantity_initial'])-float(request.form['quantity_defective']))
+                    )
+                    db.commit()
+                except:
+                    flash('Some error occured.')
+                else:
+                    flash('Batch successfully added.')
+        else:
+            flash('No functionality to handle submitted form.')
 
     stockData = db.execute("SELECT * FROM {}_stocks_view".format(g.user['username'])).fetchall()
-    return render_template("inventory_views/inventory.html", stockData=stockData)
+    ingridientsList = db.execute("SELECT id, ingridient_name, measuring_unit FROM {}_ingridients;".format(g.user['username'])).fetchall()
+    return render_template("inventory_views/inventory.html", 
+        stockData=stockData, ingridientsList=ingridientsList)
 
 @bp.route("/supply", methods=('GET', 'POST'))
 @signin_required
@@ -63,7 +89,7 @@ def supply():
             except:
                 flash("Some error occured.")
             else:
-                flash("Successfully marked-settled the pending payments of supplier with id {}.".format(request.form['supplier_id']))
+                flash("Successfully marked the pending payments of supplier-id {} as settled.".format(request.form['supplier_id']))
         elif('add_order' in request.form):
             try:
                 db.execute(
