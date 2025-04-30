@@ -56,6 +56,8 @@ def inventory():
                     flash('Some error occured.')
                 else:
                     flash('Batch successfully added.')
+        elif('dispose_batch' in request.form):
+            flash("Attempt to dispose batch")
         else:
             flash('No functionality to handle submitted form.')
 

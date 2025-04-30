@@ -88,6 +88,11 @@
 <section id="dispose_batch_section">
     <h1>Dispose Batch</h1>
     <p>Remove a batch of an ingridient from the inventory.</p>
+    <form action="{{url_for('inventory.inventory')}}" method="post">
+        <label for="batch_id">Enter batch ID</label>
+        <input type="number" step="1" name="batch_id" required />
+        <input type="submit" class="outlined_button" value="Dispose" name="dispose_batch"/>
+    </form>
 </section>
 
 <section id="report_consumption_section">
