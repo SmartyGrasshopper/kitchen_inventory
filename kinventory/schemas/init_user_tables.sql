@@ -48,10 +48,11 @@ CREATE TABLE {username}_batches(
 );
 
 CREATE TABLE {username}_consumption_records(
-    consumption_date TIMESTAMP NOT NULL,
+    consumption_date DATE NOT NULL,
     ingridient_id INTEGER NOT NULL,
     quantity_consumed FLOAT NOT NULL,
-    FOREIGN KEY (ingridient_id) REFERENCES {username}_ingridients (id)
+    FOREIGN KEY (ingridient_id) REFERENCES {username}_ingridients (id),
+    CONSTRAINT unique_ingridient_date UNIQUE (consumption_date, ingridient_id)
 );
 
 

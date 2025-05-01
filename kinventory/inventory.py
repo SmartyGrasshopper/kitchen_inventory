@@ -79,8 +79,8 @@ def inventory():
                     db.commit()
                     flash("Batch ID {} disposed.".format(batch_id), 'success')
         elif('report_consumption' in request.form):
-            ingridient_id = request.form['ingridient_id']
-            quantity = request.form['quantity']
+            ingridient_id = int(request.form['ingridient_id'])
+            quantity = float(request.form['quantity'])
 
             # check if enough quantity present
             # if yes, do two things
@@ -88,7 +88,52 @@ def inventory():
             #     probably starting with the oldest batch.
             # (b) add the consumed quantity to consumption
             #     records against ingridient and today's date.
-            flash("Report consumption not implemented yet.", "info")
+
+            ingridient_batches = db.execute(
+                "SELECT id, quantity_available "
+                "FROM {}_batches "
+                "WHERE ingridient_id = ? "
+                "AND disposal_date IS NULL;".format(g.user['username']),
+                (ingridient_id,)
+            )
+
+            updateData = []
+            Q = quantity
+            for i, q in ingridient_batches:
+                if(Q > q):
+                    updateData.append((i,0))
+                    Q -= q
+                else:
+                    updateData.append((i, q-Q))
+                    Q = 0
+                    break
+
+            if(Q > 0):
+                flash('Not enough quantity present in inventory to consume.', 'info')
+            else:
+                try:
+                    # updating the quantity in batches
+                    for id, q in updateData:
+                        db.execute(
+                            "UPDATE {}_batches "
+                            "SET quantity_available = {} "
+                            "WHERE id = {};".format(g.user['username'], q, id)
+                        )
+
+                    # adding the record to consumption records
+                    db.execute(
+                        "INSERT INTO {}_consumption_records "
+                        "(consumption_date, ingridient_id, quantity_consumed) VALUES (CURRENT_DATE,?,?) "
+                        "ON CONFLICT (consumption_date, ingridient_id) "
+                        "DO UPDATE SET quantity_consumed = quantity_consumed + excluded.quantity_consumed;".format(g.user['username']),
+                        (ingridient_id, quantity)
+                    )
+                except:
+                    db.rollback()
+                    flash('Some error occured.', 'error')
+                else:
+                    db.commit()
+                    flash('Consumption reported successfully.', 'success')
 
         else:
             flash('No functionality to handle submitted form.', 'error')
