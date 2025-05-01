@@ -101,9 +101,15 @@ CREATE VIEW {username}_supplyorders_view AS
         {username}_supply_orders.consumption_start AS consumption_start,
         {username}_supply_orders.order_date AS order_date,
         {username}_suppliers.supplier_name AS supplier_name,
-        {username}_supply_orders.rate AS rate
+        {username}_supply_orders.rate AS rate,
+        supply_quantity.supplied_quantity AS supplied_quantity
     FROM {username}_supply_orders
     LEFT JOIN {username}_suppliers ON {username}_supply_orders.supplier_id = {username}_suppliers.id
     LEFT JOIN {username}_ingridients ON {username}_supply_orders.ingridient_id = {username}_ingridients.id
+    LEFT JOIN (
+        SELECT supply_order_id, SUM(quantity_initial) AS supplied_quantity
+        FROM {username}_batches
+        GROUP BY supply_order_id
+    ) AS supply_quantity ON {username}_supply_orders.id = supply_quantity.supply_order_id
     WHERE {username}_supply_orders.consumption_start > CURRENT_TIMESTAMP
     ORDER BY {username}_supply_orders.consumption_start;

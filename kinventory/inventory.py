@@ -120,7 +120,7 @@ def inventory():
                             "WHERE id = {};".format(g.user['username'], q, id)
                         )
 
-                    # adding the record to consumption records
+                    # adding the record to consumption records (UPSERT OPERATION)
                     db.execute(
                         "INSERT INTO {}_consumption_records "
                         "(consumption_date, ingridient_id, quantity_consumed) VALUES (CURRENT_DATE,?,?) "

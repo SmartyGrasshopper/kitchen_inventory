@@ -32,7 +32,7 @@
         <thead>
             <td>ID</td>
             <td>Ingridient</td>
-            <td>Quantity</td>
+            <td>Quantity (Supplied/Demanded)</td>
             <td>Consumption Date</td>
             <td>Order Date</td>
             <td>Supplier</td>
@@ -42,7 +42,7 @@
         <tr>
             <td>{{row[0]}}</td>
             <td>{{row[1]}}</td>
-            <td>{{row[3]}} {{row[2]}}</td>
+            <td>{{row['supplied_quantity']}}/{{row[3]}} {{row[2]}}</td>
             <td>{{row[4]}}</td>
             <td>{{row[5]}}</td>
             <td>{{row[6]}}</td>
