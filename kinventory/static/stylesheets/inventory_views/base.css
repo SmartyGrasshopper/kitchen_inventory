@@ -43,7 +43,7 @@ nav#inventory_navigation{
 /* Styling for content div i.e. page content */
 .content_div{
     display:grid;
-    grid-template-columns: minmax(250px,50%);
+    grid-template-columns: minmax(250px,65%);
     justify-content: center;
     gap: 5px;
 

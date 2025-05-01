@@ -17,6 +17,8 @@ input[type="text"], input[type="password"], select{
 }
 
 section>img{
-    width: 100%;
+    width: 80%;
     height: auto;
+    display: block;  /* Image was not getting centred due to align property */
+    justify-self: center; /* Wanted only the images to be centred and not all the grid content, so setting here specifically */
 }
