@@ -30,6 +30,7 @@
             <td>Name</td>
             <td>Available Quantity</td>
             <td>Available Batches</td>
+            <td>Batch IDs</td>
         </thead>
         {% for row in stockData %}
         <tr>
@@ -37,6 +38,9 @@
             <td>{{row[1]}}</td>
             <td>{{row[2]}} {{row[4]}}</td>
             <td>{{row[3]}}</td>
+            <td>
+                {{row[5]}}
+            </td>
         </tr>
         {% endfor %}
     </table>

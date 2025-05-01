@@ -62,10 +62,12 @@ CREATE VIEW {username}_stocks_view AS
         {username}_ingridients.ingridient_name AS ingridient_name,
         COALESCE(S1.total_quantity,0) AS quantity_available,
         COALESCE(S1.total_batches,0) AS batches_available,
-        {username}_ingridients.measuring_unit AS measuring_unit
+        {username}_ingridients.measuring_unit AS measuring_unit,
+        S1.id AS available_batch_ids
     FROM {username}_ingridients 
     LEFT JOIN (
-        SELECT ingridient_id, SUM(quantity_available) as total_quantity, COUNT(*) AS total_batches
+        SELECT ingridient_id, SUM(quantity_available) as total_quantity, 
+            COUNT(*) AS total_batches, GROUP_CONCAT(id, ', ') AS id
         FROM {username}_batches
         WHERE disposal_date IS NULL
         GROUP BY ingridient_id
@@ -102,7 +104,7 @@ CREATE VIEW {username}_supplyorders_view AS
         {username}_supply_orders.order_date AS order_date,
         {username}_suppliers.supplier_name AS supplier_name,
         {username}_supply_orders.rate AS rate,
-        supply_quantity.supplied_quantity AS supplied_quantity
+        COALESCE(supply_quantity.supplied_quantity,0) AS supplied_quantity
     FROM {username}_supply_orders
     LEFT JOIN {username}_suppliers ON {username}_supply_orders.supplier_id = {username}_suppliers.id
     LEFT JOIN {username}_ingridients ON {username}_supply_orders.ingridient_id = {username}_ingridients.id

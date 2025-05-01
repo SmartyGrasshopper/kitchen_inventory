@@ -49,13 +49,20 @@ def create_new_user(username, password, business_name):
         db.execute(
             "INSERT INTO users (username, psword, business_name) VALUES (?,?,?);",
                 (username, generate_password_hash(password), business_name)
-        )
-        db.commit()
+        )        
     except db.IntegrityError:
+        db.rollback()
         return (True, "Error in sign-up: Username already in use. Please select a different username.")
     
     # creating all the tables for the user's data
-    with current_app.open_resource("schemas/init_user_tables.sql") as f:
+    f = current_app.open_resource("schemas/init_user_tables.sql")
+    try:
         db.executescript(f.read().decode('utf8').format(username=username))
-    
+    except:
+        db.rollback()
+        return(True, 'Some error occured during signup.')
+    finally:
+        f.close()
+
+    db.commit()
     return (False, "")    # False means no error
