@@ -131,6 +131,25 @@
         getting expired (unfit for use)
         from an available batch.
     </p>
+
+    <form action="{{url_for('inventory.inventory')}}" method="post" class="double_columned">
+
+        <label for="ingridient_id">Select ingridient</label>
+        <select name="ingridient_id" required>
+            <option value="" selected disabled hidden>Select</option>
+            {% for row in ingridientsList %}
+            <option value="{{row[0]}}">{{row[1]}} ({{row[2]}})</option>
+            {% endfor %}
+        </select>
+
+        <label for="batch_id">Enter batch id</label>
+        <input type="number" step="1" name="batch_id" required />
+        <label for="expired_quantity">Enter expired quantity</label>
+        <input type="number" step="any" name="expired_quantity" required />
+
+        <input type="submit" name="report_expiry" class="outlined_button" value="Report" />
+        <input type="reset" class="outlined_button"/>
+    </form>
 </section>
 
 {% endblock %}

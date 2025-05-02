@@ -86,6 +86,7 @@ def inventory():
             # if yes, do two things
             # (a) reduce that quantity from availability,
             #     probably starting with the oldest batch.
+            #     Dispose the batches where available quantity is reduced to 0.
             # (b) add the consumed quantity to consumption
             #     records against ingridient and today's date.
 
@@ -146,6 +147,53 @@ def inventory():
                     flash('Consumption reported successfully.', 'success')
                     if(disposedIDs):
                         flash('Batch ID {} disposed on getting empty.'.format(', '.join(disposedIDs)), 'info')
+        elif('report_expiry' in request.form):
+            username = g.user['username']
+            ingridient_id = int(request.form['ingridient_id'])
+            batch_id = int(request.form['batch_id'])
+            expired_quantity = float(request.form['expired_quantity'])
+
+            batchDetails = db.execute(
+                "SELECT * FROM {}_batches "
+                "WHERE id = {};".format(username, batch_id)
+            ).fetchone()
+
+            if(batchDetails['disposal_date'] != None):
+                flash('Batch-ID {} is already disposed on {}. Details cannot be updated.'.format(batch_id, batchDetails['disposal_date']), 'info')
+            elif(batchDetails['ingridient_id'] != ingridient_id):
+                flash('Selected ingridient (Ingridient-ID {}) does not match with batch details (Batch-ID {}). '
+                      'Please check the details.'.format(ingridient_id, batch_id), 'error')
+            elif(float(batchDetails['quantity_available']) < expired_quantity):
+                flash("Expired quantity cannot be greater than "
+                      "quantity currently available in the batch ({} units).".format(
+                          batchDetails['quantity_available']
+                      ), 'info')
+            else:
+                remaining_quantity = float(batchDetails['quantity_available']) - expired_quantity
+                total_expired_quantity = float(batchDetails['quantity_expired']) + expired_quantity
+
+                try:
+                    if(remaining_quantity > 0):
+                        db.execute(
+                            "UPDATE {}_batches "
+                            "SET quantity_available = {}, quantity_expired = {} "
+                            "WHERE id = {};".format(username, remaining_quantity, total_expired_quantity, batch_id)
+                        )
+                    else:
+                        db.execute(
+                            "UPDATE {}_batches "
+                            "SET quantity_available = {}, quantity_expired = {}, disposal_date = CURRENT_TIMESTAMP "
+                            "WHERE id = {};".format(username, remaining_quantity, total_expired_quantity, batch_id)
+                        )
+                except:
+                    db.rollback()
+                    flash("Some error occured while processing the request.", 'error')
+                else:
+                    db.commit()
+                    flash('Expired quantity successfully submitted for Batch-ID {}. '
+                          'Remaining units {}.'.format(batch_id, remaining_quantity), 'success')
+                    if(remaining_quantity == 0):
+                        flash('Batch-ID {} disposed as available quantity reduced to 0.'.format(batch_id), 'info')
 
         else:
             flash('No functionality to handle submitted form.', 'error')
@@ -194,7 +242,7 @@ def supply():
             else:
                 flash("Supply order added successfully.", 'success')
         else:
-            pass
+            flash("No functionality to handle the submitted form.", 'error')
     
 
     supplierInfo = db.execute("SELECT * FROM {}_supplierinfo_view".format(g.user['username'])).fetchall()
