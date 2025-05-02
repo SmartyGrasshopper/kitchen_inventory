@@ -4,6 +4,12 @@
     border-color: rgb(203, 122, 0);
     color: rgb(148, 89, 0);
     cursor: pointer;
+    font-weight: 600;
+}
+
+.outlined_button:hover{
+    border-color: rgb(203, 122, 0);
+    color: rgb(203, 122, 0);
 }
 
 select{
