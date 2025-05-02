@@ -265,15 +265,25 @@ def consumption():
 def menu():
     return render_template("inventory_views/menu.html")
 
-@bp.route("/analytics", methods=('GET',))
+@bp.route("/analytics", methods=('GET', 'POST'))
 @signin_required
 def analytics():
     db = get_db()
+    ingridientID = None
+
+    if(request.method=='POST'):
+        if('analytics_ingridient_id' in request.form):
+            ingridientID = int(request.form['analytics_ingridient_id'])
+        else:
+            flash('No functionality to handle the submitted form.', 'error')
 
     ingridientsList = db.execute(
         "SELECT id, ingridient_name FROM {}_ingridients;".format(g.user['username'])
     ).fetchall()
-    return render_template("inventory_views/analytics.html", ingridientsList=ingridientsList)
+    return render_template(
+        "inventory_views/analytics.html", 
+        ingridientsList=ingridientsList, ingridientID = ingridientID
+    )
 
 @bp.route("/account", methods=('GET', 'POST'))
 @signin_required
@@ -318,15 +328,15 @@ def account():
 
     return render_template("inventory_views/account.html")
 
-@bp.route("/consumption_graph/<ingridient_name>", methods=('GET',))
+@bp.route("/consumption_graph/<ingridient_id>", methods=('GET',))
 @signin_required
-def consumption_graph(ingridient_name):
+def consumption_graph(ingridient_id):
     fig, ax = plt.subplots()
     x = [-4,-3,-2,-1]
     y = [8,7.8,9,8.5]
     ax.plot(x,y, label="Past", color="#5555FF")
     ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
-    plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_name))
+    plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_id))
     plt.legend()
     ax.set_xlabel("Day")
     ax.set_ylabel("Consumption (in kg)")
@@ -338,19 +348,37 @@ def consumption_graph(ingridient_name):
 
     return Response(buf.read(), mimetype='image/webp')
 
-@bp.route("/wastage_graph/<ingridient_name>", methods=('GET',))
+@bp.route("/wastage_graph/<ingridient_id>", methods=('GET',))
 @signin_required
-def wastage_graph(ingridient_name):
+def wastage_graph(ingridient_id):
+    db = get_db()
+
+    wastageData = db.execute(
+        "SELECT id, (quantity_defective/quantity_initial)*100 AS defective_percent, "
+        "CASE "
+        "   WHEN disposal_date IS NULL THEN (quantity_expired/(quantity_initial-quantity_defective))*100 "
+        "   ELSE ((quantity_expired+quantity_available)/(quantity_initial-quantity_defective))*100 "
+        "END AS expiry_percent "
+        "FROM {}_batches WHERE ingridient_id={} "
+        "ORDER BY id ASC;".format(g.user['username'], int(ingridient_id))
+    ).fetchall()
+
+    expiryData = [w['expiry_percent'] for w in wastageData]
+    defectiveData = [w['defective_percent'] for w in wastageData]
+
+    marker=None
+    if(len(expiryData)<10): marker='o'
+    else: marker=None
+
     fig, ax = plt.subplots()
-    x = [1,2,3]
-    y1 = [5,2,4]
-    y2 = [2,4,3]
-    ax.plot(x,y1, label="Expiry Percentage")
-    ax.plot(x,y2, label="Defective Percentage")
+    if(wastageData):
+        ax.plot(expiryData, label="Percent Expired", marker=marker)
+        ax.plot(defectiveData, label="Percent Defective", marker=marker)
     ax.legend()
-    ax.set_xlabel('Batch No.')
+    ax.set_xlabel('nth batch of ingridient')
     ax.set_ylabel('Percent')
-    ax.set_title("Wastage analytics for {}\n(Dummy Graph)".format(ingridient_name))
+    #ax.grid()
+    #ax.set_title("Wastage analytics for {}\n(Dummy Graph)".format(ingridient_id))
 
     buf = io.BytesIO()
     plt.savefig(buf, format='webp')
