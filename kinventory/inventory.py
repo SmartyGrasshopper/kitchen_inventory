@@ -114,11 +114,18 @@ def inventory():
                 try:
                     # updating the quantity in batches
                     for id, q in updateData:
-                        db.execute(
-                            "UPDATE {}_batches "
-                            "SET quantity_available = {} "
-                            "WHERE id = {};".format(g.user['username'], q, id)
-                        )
+                        if(q==0):
+                            db.execute(
+                                "UPDATE {}_batches "
+                                "SET quantity_available = {}, disposal_date = CURRENT_TIMESTAMP "
+                                "WHERE id = {};".format(g.user['username'], q, id)
+                            )
+                        else:
+                            db.execute(
+                                "UPDATE {}_batches "
+                                "SET quantity_available = {} "
+                                "WHERE id = {};".format(g.user['username'], q, id)
+                            )
 
                     # adding the record to consumption records (UPSERT OPERATION)
                     db.execute(
@@ -133,7 +140,12 @@ def inventory():
                     flash('Some error occured.', 'error')
                 else:
                     db.commit()
+                    
+                    disposedIDs=[str(id) for id,q in updateData if q==0]
+
                     flash('Consumption reported successfully.', 'success')
+                    if(disposedIDs):
+                        flash('Batch ID {} disposed on getting empty.'.format(', '.join(disposedIDs)), 'info')
 
         else:
             flash('No functionality to handle submitted form.', 'error')
