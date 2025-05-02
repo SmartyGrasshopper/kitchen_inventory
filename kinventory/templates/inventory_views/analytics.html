@@ -15,38 +15,51 @@
 <p> Analytics for ingridients to help in decision making.</p>
 
 <form action="{{url_for('inventory.analytics')}}" method="post">
-    <label for="ingridient_name">Showing analytics for the ingridient</label>
-    <select name="ingridient_name" required>
-        <option value="" selected disabled hidden>Select</option>
-        {% for row in ingridientsList %}
-        <option value="{{row[0]}}">{{row[1]}}</option>
-        {% endfor %}
+    <label for="analytics_ingridient_id">
+        {% if ingridientID %}
+            Showing analytics for the ingridient
+        {% else %}
+            Select an ingridient to view analytics
+        {% endif %}
+    </label>
+    <select name="analytics_ingridient_id" onchange="this.form.submit()" required>
+        {% if ingridientID %}
+            {% for row in ingridientsList %}
+                <option value="{{row[0]}}" {% if ingridientID == row[0] %}selected{% endif %}>{{row[1]}}</option>
+            {% endfor %}
+        {% else %}
+            <option value="" selected disabled hidden>Select</option>
+            {% for row in ingridientsList %}
+                <option value="{{row[0]}}">{{row[1]}}</option>
+            {% endfor %}
+        {% endif %}
     </select>
-    <input type="submit" value="View Analytics" class="outlined_button" name="select_ingridient"/>
 </form>
 
-<section id="consumption_section">
-    <h1>Consumption</h1>
-    <p>Graph of day wise consumption for selected ingridient.</p>
-    Show "No ingridient selected" when not selected
-    and graph when selected.
+{% if ingridientID %}
+    <section id="consumption_section">
+        <h1>Consumption</h1>
+        <p>Graph of day wise consumption for selected ingridient.</p>
+        Show "No ingridient selected" when not selected
+        and graph when selected.
 
-    <img src="{{url_for('inventory.consumption_graph', ingridient_name='Chillies')}}">
-</section>
+        <img src="{{url_for('inventory.consumption_graph', ingridient_id=ingridientID)}}">
+    </section>
 
-<section id="wastage_section">
-    <h1>Wastage</h1>
-    <p>
-        Graph containing two batch-wise line graphs of
-        following ratios:
-    </p>
-    <ul>
-        <li>expired-quantity to undefective-quantity</li>
-        <li>defective-quantity to total-quantity-received</li>
-    </ul>
-    <p> for the selected ingridient.</p>
+    <section id="wastage_section">
+        <h1>Wastage</h1>
+        <p>
+            Graph containing two batch-wise line graphs of
+            following ratios:
+        </p>
+        <ul>
+            <li>expired-quantity to undefective-quantity</li>
+            <li>defective-quantity to total-quantity-received</li>
+        </ul>
+        <p> for the selected ingridient.</p>
 
-    <img src="{{url_for('inventory.wastage_graph', ingridient_name='Chillies')}}">
-</section>
+        <img src="{{url_for('inventory.wastage_graph', ingridient_id=ingridientID)}}">
+    </section>
+{% endif %}
 
 {% endblock %}
