@@ -50,6 +50,13 @@ nav#inventory_navigation{
 
 }
 
+@media(max-width: 480px){
+    nav#inventory_navigation{
+        grid-column-start: 1;
+        grid-column-end: 2;
+    }
+}
+
 #navbar_image{
     width: 3rem;
     height: auto;  
@@ -65,6 +72,12 @@ nav#inventory_navigation{
 
     overflow-y: auto;
     align-content: start;
+}
+
+@media(max-width: 480px){
+    .content_div{
+        grid-template-columns: 100%;
+    }
 }
 
 section{
@@ -83,10 +96,24 @@ section>h1{
 
 #top_container{
     display:grid;
-    grid-template-columns: 15% 85%;
-    grid-template-rows: 10% 90%;
+    
+    
     height: 98vh; /*100vh;*/
 }
+
+@media(max-width: 480px){
+    #top_container{
+        grid-template-columns: 100%;
+        grid-template-rows: 10%, auto, auto;
+    }
+}
+@media(min-width: 480px){
+    #top_container{
+        grid-template-columns: 15% 85%;
+        grid-template-rows: 10% 90%;
+    }
+}
+
 
 /* Styling page navigation */
 #page_navigation{
@@ -97,6 +124,17 @@ section>h1{
     margin: 10px;
     text-align: center;
     row-gap: 10px;
+}
+
+/* don't know how to handle page navigatin
+ * in mobile screen.
+ * For now, hiding it at all. It is not required
+ * that much since.
+ */
+@media(max-width: 480px){
+    #page_navigation{
+        display: none;
+    }
 }
 
 #page_navigation>a{
@@ -114,4 +152,13 @@ section>h1{
 }
 #page_navigation>a:hover{
     color: rgb(62, 62, 62);
+}
+
+@media(max-width: 480px){
+    table{
+        overflow-x: auto;
+        display: block;
+        width: 100vw;
+        justify-self: center;
+    }
 }
