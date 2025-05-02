@@ -1,5 +1,15 @@
 @import url('/static/stylesheets/base.css');
 
+.outlined_button{
+    border-color: rgb(203, 122, 0);
+    color: rgb(148, 89, 0);
+    cursor: pointer;
+}
+
+select{
+    background-color: white;
+}
+
 body{
     margin-top: 0;
 }
