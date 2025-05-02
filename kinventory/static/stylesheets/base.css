@@ -61,11 +61,11 @@ a{
     color: #000000;
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
+    font-weight: 500;
 }
 
 #flash .close-button:hover {
     opacity: 1;
-    font-weight: bold;
 }
 
 li.flash_messages{

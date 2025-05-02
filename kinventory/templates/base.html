@@ -1,47 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="icon" href=/static/favicon.png type=image/png />
-        <link rel="stylesheet" href="{% block cssfile %}{% endblock %}" />
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const flashElement = document.getElementById('flash');
-                if (flashElement) {
-                    const closeButton = document.createElement('button');
-                    closeButton.classList.add('close-button');
-                    closeButton.innerHTML = '&times;'; // The '×' symbol
-                    closeButton.addEventListener('click', function() {
-                        flashElement.style.display = 'none';
-                    });
-                    flashElement.appendChild(closeButton);
-                }
-            });
-        </script>
-    </head>
-    <body> 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <ul id="flash">
-                {% for category, message in messages %}
-                    <li class="flash_messages">
-                        {% if category == 'success' %}
-                        <img src="{{url_for('static', filename = '/icons/check.png')}}"/>
-                        {% elif category == 'info' %}
-                        <img src="{{url_for('static', filename= '/icons/info.png')}}"/>
-                        {% elif category == 'error' %}
-                        <img src="{{url_for('static', filename= '/icons/error.png')}}"/>
-                        {% else %}
-                        <img src="{{url_for('static', filename= '/icons/info.png')}}"/>
-                        {% endif %}
-                        {{message}}
-                    </li>
-                {% endfor %}
-            </ul>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href=/static/favicon.png type=image/png />
+    <link rel="stylesheet" href="{% block cssfile %}{% endblock %}" />
+
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul id="flash">
+        <button onclick="document.getElementById('flash').style.display='none';" class="close-button">&#9746;</button>
+        {% for category, message in messages %}
+        <li class="flash_messages">
+            {% if category == 'success' %}
+            <img src="{{url_for('static', filename = '/icons/check.png')}}" />
+            {% elif category == 'info' %}
+            <img src="{{url_for('static', filename= '/icons/info.png')}}" />
+            {% elif category == 'error' %}
+            <img src="{{url_for('static', filename= '/icons/error.png')}}" />
+            {% else %}
+            <img src="{{url_for('static', filename= '/icons/info.png')}}" />
             {% endif %}
-        {% endwith %}       
-        {% block body %}{% endblock %}
-        
-    </body>
+            {{message}}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
+
+</body>
+
 </html>
