@@ -278,7 +278,7 @@ def analytics():
             flash('No functionality to handle the submitted form.', 'error')
 
     ingridientsList = db.execute(
-        "SELECT id, ingridient_name FROM {}_ingridients;".format(g.user['username'])
+        "SELECT id, ingridient_name, measuring_unit FROM {}_ingridients;".format(g.user['username'])
     ).fetchall()
     return render_template(
         "inventory_views/analytics.html", 
@@ -328,18 +328,33 @@ def account():
 
     return render_template("inventory_views/account.html")
 
-@bp.route("/consumption_graph/<ingridient_id>", methods=('GET',))
+@bp.route("/consumption_graph/<ingridient_id>/<measuring_unit>", methods=('GET',))
 @signin_required
-def consumption_graph(ingridient_id):
+def consumption_graph(ingridient_id,measuring_unit):
+    db = get_db()
+    ingridient_id = int(ingridient_id)
+    historySeconds = 300*24*60*60 # seconds in 300 days
+
+    consumptionData = db.execute(
+        "SELECT consumption_date, quantity_consumed "
+        "FROM {}_consumption_records "
+        "WHERE ingridient_id = {} "
+        "AND (unixepoch(CURRENT_TIMESTAMP) - unixepoch(consumption_date))<({}) "
+        "ORDER BY consumption_date;".format(
+                g.user['username'], ingridient_id, historySeconds
+            )
+    ).fetchall()
+
+    y = [x['quantity_consumed'] for x in consumptionData]
+    #x = [x['consumption_date'] for x in consumptionData]
+
     fig, ax = plt.subplots()
-    x = [-4,-3,-2,-1]
-    y = [8,7.8,9,8.5]
-    ax.plot(x,y, label="Past", color="#5555FF")
-    ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
-    plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_id))
+    #ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
+    ax.plot(range(-len(y)+1,1),y, label="Past", color="#5555FF")
+    #plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_id))
     plt.legend()
     ax.set_xlabel("Day")
-    ax.set_ylabel("Consumption (in kg)")
+    ax.set_ylabel("Consumption ({})".format(measuring_unit))
 
     buf = io.BytesIO()
     plt.savefig(buf, format='webp')
@@ -372,8 +387,8 @@ def wastage_graph(ingridient_id):
 
     fig, ax = plt.subplots()
     if(wastageData):
-        ax.plot(expiryData, label="Percent Expired", marker=marker)
-        ax.plot(defectiveData, label="Percent Defective", marker=marker)
+        ax.plot(expiryData, label="Percent Expired", marker=marker, color='orange')
+        ax.plot(defectiveData, label="Percent Defective", marker=marker, color='yellow')
     ax.legend()
     ax.set_xlabel('nth batch of ingridient')
     ax.set_ylabel('Percent')

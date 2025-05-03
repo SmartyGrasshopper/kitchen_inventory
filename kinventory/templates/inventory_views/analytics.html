@@ -43,7 +43,7 @@
         Show "No ingridient selected" when not selected
         and graph when selected.
 
-        <img src="{{url_for('inventory.consumption_graph', ingridient_id=ingridientID)}}">
+        <img src="{{url_for('inventory.consumption_graph', ingridient_id=ingridientID, measuring_unit=ingridientsList[ingridientID-1][2])}}">
     </section>
 
     <section id="wastage_section">
