@@ -333,7 +333,7 @@ def account():
 def consumption_graph(ingridient_id,measuring_unit):
     db = get_db()
     ingridient_id = int(ingridient_id)
-    historySeconds = 300*24*60*60 # seconds in 300 days
+    historySeconds = 100*24*60*60 # seconds in 300 days
 
     consumptionData = db.execute(
         "SELECT consumption_date, quantity_consumed "
@@ -348,11 +348,31 @@ def consumption_graph(ingridient_id,measuring_unit):
     y = [x['quantity_consumed'] for x in consumptionData]
     #x = [x['consumption_date'] for x in consumptionData]
 
+    # Custom theme definitions
+    plt.rcParams['grid.color']='white'
+    plt.rcParams['figure.facecolor'] = 'white'
+    plt.rcParams['axes.facecolor']='#F5F5F5'
+    plt.rcParams['axes.edgecolor']='black'
+    plt.rcParams['ytick.color'] = 'gray'
+    plt.rcParams['xtick.color'] = 'gray'
+    plt.rcParams['ytick.labelcolor'] = 'gray'
+    plt.rcParams['xtick.labelcolor'] = 'gray'
+    plt.rcParams['axes.labelcolor']='gray'
+    plt.rcParams['axes.titlecolor']='gray'
+    plt.rcParams['axes.spines.top']=False
+    plt.rcParams['axes.spines.right']=False
+    plt.rcParams['axes.spines.left']=False
+    plt.rcParams['legend.facecolor']='white'
+    plt.rcParams['legend.edgecolor']='white'
+    plt.rcParams['legend.labelcolor']='grey'
+    # custom theme definitions
+    
     fig, ax = plt.subplots()
     #ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
-    ax.plot(range(-len(y)+1,1),y, label="Past", color="#5555FF")
+    ax.plot(range(-len(y)+1,1),y, label="Past", color="peru") #"#5555FF")
     #plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_id))
     plt.legend()
+    ax.grid()
     ax.set_xlabel("Day")
     ax.set_ylabel("Consumption ({})".format(measuring_unit))
 
@@ -381,18 +401,33 @@ def wastage_graph(ingridient_id):
     expiryData = [w['expiry_percent'] for w in wastageData]
     defectiveData = [w['defective_percent'] for w in wastageData]
 
-    marker=None
-    if(len(expiryData)<10): marker='o'
-    else: marker=None
+    # Custom theme definitions
+    plt.rcParams['grid.color']='white'
+    plt.rcParams['figure.facecolor'] = 'white'
+    plt.rcParams['axes.facecolor']='#F5F5F5'
+    plt.rcParams['axes.edgecolor']='black'
+    plt.rcParams['ytick.color'] = 'gray'
+    plt.rcParams['xtick.color'] = 'gray'
+    plt.rcParams['ytick.labelcolor'] = 'gray'
+    plt.rcParams['xtick.labelcolor'] = 'gray'
+    plt.rcParams['axes.labelcolor']='gray'
+    plt.rcParams['axes.titlecolor']='gray'
+    plt.rcParams['axes.spines.top']=False
+    plt.rcParams['axes.spines.right']=False
+    plt.rcParams['axes.spines.left']=False
+    plt.rcParams['legend.facecolor']='white'
+    plt.rcParams['legend.edgecolor']='white'
+    plt.rcParams['legend.labelcolor']='grey'
+    # custom theme definitions
 
     fig, ax = plt.subplots()
     if(wastageData):
-        ax.plot(expiryData, label="Percent Expired", marker=marker, color='orange')
-        ax.plot(defectiveData, label="Percent Defective", marker=marker, color='yellow')
+        ax.plot(expiryData, label="Expired", color='goldenrod')
+        ax.plot(defectiveData, label="Defective", color='chocolate', linewidth=1)
     ax.legend()
     ax.set_xlabel('nth batch of ingridient')
     ax.set_ylabel('Percent')
-    #ax.grid()
+    ax.grid()
     #ax.set_title("Wastage analytics for {}\n(Dummy Graph)".format(ingridient_id))
 
     buf = io.BytesIO()

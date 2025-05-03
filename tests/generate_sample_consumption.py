@@ -2,6 +2,8 @@ import sqlite3
 import datetime
 import random
 
+# Use this file to generate past sample consumption records 
+# for a given user and ingridient id.
 username = "Abhijeet"
 ingridient_id = 1
 daysFromToday = 500

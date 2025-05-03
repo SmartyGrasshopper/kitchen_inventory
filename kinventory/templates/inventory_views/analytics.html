@@ -39,24 +39,14 @@
 {% if ingridientID %}
     <section id="consumption_section">
         <h1>Consumption</h1>
-        <p>Graph of day wise consumption for selected ingridient.</p>
-        Show "No ingridient selected" when not selected
-        and graph when selected.
+        <p>Graph showing past consumption trends and few days of prediction for selected ingridient.</p>
 
         <img src="{{url_for('inventory.consumption_graph', ingridient_id=ingridientID, measuring_unit=ingridientsList[ingridientID-1][2])}}">
     </section>
 
     <section id="wastage_section">
         <h1>Wastage</h1>
-        <p>
-            Graph containing two batch-wise line graphs of
-            following ratios:
-        </p>
-        <ul>
-            <li>expired-quantity to undefective-quantity</li>
-            <li>defective-quantity to total-quantity-received</li>
-        </ul>
-        <p> for the selected ingridient.</p>
+        <p>Graph visualising data of expiry and defective-supply for the selected ingridient.</p>
 
         <img src="{{url_for('inventory.wastage_graph', ingridient_id=ingridientID)}}">
     </section>
