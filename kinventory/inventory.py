@@ -333,13 +333,14 @@ def account():
 def consumption_graph(ingridient_id,measuring_unit):
     db = get_db()
     ingridient_id = int(ingridient_id)
-    historySeconds = 100*24*60*60 # seconds in 300 days
+    historySeconds = 50*24*60*60 # seconds in 50 days
 
     consumptionData = db.execute(
         "SELECT consumption_date, quantity_consumed "
         "FROM {}_consumption_records "
         "WHERE ingridient_id = {} "
-        "AND (unixepoch(CURRENT_TIMESTAMP) - unixepoch(consumption_date))<({}) "
+        "AND (unixepoch(CURRENT_DATE) - unixepoch(consumption_date))<({}) "
+        "AND consumption_date != CURRENT_DATE "
         "ORDER BY consumption_date;".format(
                 g.user['username'], ingridient_id, historySeconds
             )
@@ -347,6 +348,24 @@ def consumption_graph(ingridient_id,measuring_unit):
 
     y = [x['quantity_consumed'] for x in consumptionData]
     #x = [x['consumption_date'] for x in consumptionData]
+
+    # calculating predicion list using simple moving average
+    max_window_size = 50
+    prediction_length = 10
+
+    prediction = []
+    window_size = min(len(y), max_window_size)
+    if(window_size > 0):
+        dp = list(map(lambda x: x/window_size, y[len(y)-window_size:]))
+        s = sum(dp)
+        left = 0
+        for i in range(prediction_length):
+            prediction.append(s)
+            dp.append(s/window_size)
+            s += dp[-1]
+            s -= dp[left]
+            left += 1
+
 
     # Custom theme definitions
     plt.rcParams['grid.color']='white'
@@ -368,9 +387,11 @@ def consumption_graph(ingridient_id,measuring_unit):
     # custom theme definitions
     
     fig, ax = plt.subplots()
-    #ax.plot([-1,0,1],[8.5,9,9.2], label="Prediction", color="#5555FF", linestyle="dashed")
-    ax.plot(range(-len(y)+1,1),y, label="Past", color="peru") #"#5555FF")
-    #plt.title("Consumption analytics for {}\nDummy graph".format(ingridient_id))
+    ax.plot(range(-len(y),0),y, label="Past", color="peru", marker='o', markersize=3)
+    if(window_size > 0):
+        ax.plot(range(0,prediction_length),prediction, label="Prediction", color="peru", linestyle="dashed")
+    else:
+        plt.title("Not enough data present for analytics.")
     plt.legend()
     ax.grid()
     ax.set_xlabel("Day")
