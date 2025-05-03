@@ -16,7 +16,7 @@ their kitchen inventory.
 Roadmap of main goals -
 
 - [x] Complete main features.
-- [ ] Complete analytics.
+- [x] Complete analytics.
 - [ ] Complete basic css file organisation \
   and sanitation if required.
 - [ ] Test

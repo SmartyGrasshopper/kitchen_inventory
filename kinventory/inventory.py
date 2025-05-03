@@ -387,9 +387,9 @@ def consumption_graph(ingridient_id,measuring_unit):
     # custom theme definitions
     
     fig, ax = plt.subplots()
-    ax.plot(range(-len(y),0),y, label="Past", color="peru", marker='o', markersize=3)
+    ax.plot(range(-len(y),0),y, label="Past", color="chocolate", linewidth=1) #, marker='o', markersize=3)
     if(window_size > 0):
-        ax.plot(range(0,prediction_length),prediction, label="Prediction", color="peru", linestyle="dashed")
+        ax.plot(range(0,prediction_length),prediction, label="Prediction", color="chocolate", linestyle="dashed", linewidth=1)
     else:
         plt.title("Not enough data present for analytics.")
     plt.legend()
@@ -443,8 +443,8 @@ def wastage_graph(ingridient_id):
 
     fig, ax = plt.subplots()
     if(wastageData):
-        ax.plot(expiryData, label="Expired", color='goldenrod')
-        ax.plot(defectiveData, label="Defective", color='chocolate', linewidth=1)
+        ax.plot(expiryData, label="Expired", color='goldenrod', linewidth=1)
+        ax.plot(defectiveData, label="Defective", color='darkkhaki', linewidth=1)
     ax.legend()
     ax.set_xlabel('nth batch of ingridient')
     ax.set_ylabel('Percent')
