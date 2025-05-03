@@ -11,6 +11,7 @@ header{
 
 h1#header_title{
     color: orangered;
+    text-align: center;
 }
 
 #header_image{
@@ -35,4 +36,21 @@ article{
 }
 #content_div{
     width: 40%;
+}
+
+@media(max-width:420px){
+    #content_div{
+        width:90%;
+    }
+
+    header>div{
+        width:70%;
+    }
+}
+
+footer{
+    text-align: center;
+    border-top: 1px dashed black;
+    padding-top: 10px;
+    padding-bottom:5px;
 }
