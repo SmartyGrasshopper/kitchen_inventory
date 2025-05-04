@@ -339,7 +339,7 @@ def consumption_graph(ingridient_id,measuring_unit):
         "SELECT consumption_date, quantity_consumed "
         "FROM {}_consumption_records "
         "WHERE ingridient_id = {} "
-        "AND (unixepoch(CURRENT_DATE) - unixepoch(consumption_date))<({}) "
+        "AND strftime('%s',CURRENT_DATE)-strftime('%s', consumption_date)<({}) "
         "AND consumption_date != CURRENT_DATE "
         "ORDER BY consumption_date;".format(
                 g.user['username'], ingridient_id, historySeconds
