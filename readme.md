@@ -32,3 +32,7 @@ Roadmap of future/uncertain goals -
 - Add filters in tables
     (for ordering rows based on different columns).
 - Dynamic form validation to improve UX.
+
+## Rough instructions for hosting the project publicly
+- Initialise the database with `commands/init_database`.
+- Change the secret key in `kinventory/__init__.py` for security.
