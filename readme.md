@@ -36,3 +36,9 @@ Roadmap of future/uncertain goals -
 ## Rough instructions for hosting the project publicly
 - Initialise the database with `commands/init_database`.
 - Change the secret key in `kinventory/__init__.py` for security.
+
+To pull the changes in your server using git -
+1. Run `git stash` to remove the changes you made to the server (like the secret key).
+2. Run `git pull` to pull the changes from the github repository.
+3. Restart your server to reflect the latest file changes.
+(tested on pythonanywhere)
