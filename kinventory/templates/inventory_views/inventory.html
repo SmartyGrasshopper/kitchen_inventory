@@ -56,7 +56,14 @@
         <label for="new_ingridient_name">Enter new ingridient name</label>
         <input type="text" name="new_ingridient_name" required />
         <label for="measuring_unit">Enter measuring unit (kg, g, L, pc etc.)</label>
-        <input type="text" name="measuring_unit" required />
+        <select name="measuring_unit" required>
+            <option value="" hidden selected>Select</option>
+            <option value="kg">Kilogram</option>
+            <option value="gm">Gram</option>
+            <option value="L">Litre</option>
+            <option value="mL">Millilitre</option>
+            <option value="pc">Piece</option>
+        </select>
         <input type="submit" class="outlined_button" value="Add Ingridient" name="add_ingridient"/>
         <input type="reset" class="outlined_button"/>
     </form>
