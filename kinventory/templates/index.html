@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Kitchen Inventory
-{% endblock %}
+{% block title %}Kitchen Inventory{% endblock %}
 
-{% block cssfile %}
-{{url_for('static', filename='/stylesheets/index.css')}}
-{% endblock %}
+{% block cssfile %}{{url_for('static', filename='stylesheets/index.css')}}{% endblock %}
 
 {% block body %}
 <header>
     <div>
         <img src="{{url_for('static', filename='favicon.webp')}}"
             id="header_image" alt="Image of the logo, a basket containing vegetable and milk pack."
-        />
+        >
         <h1 id="header_title">Kitchen Inventory</h1>
         <p>
             A software solution to help
@@ -56,6 +52,6 @@ Kitchen Inventory
 <footer>
     &copy;2025, website designed and developed by <a href="https://github.com/gras-hub">Gras</a>.
     Source code is available under MIT Licence, 
-    <a href="https://github.com/gras-hub/kitchen_inventory">here</a> on github.
+    <a href="https://github.com/gras-hub/kitchen_inventory">here on github</a>.
 </footer>
 {% endblock %}

@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}
-Kitchen Inventory
-{% endblock %}
+{% block title %}Kitchen Inventory{% endblock %}
 
-{% block cssfile %}
-{{url_for('static', filename='/stylesheets/404.css')}}
-{% endblock %}
+{% block cssfile %}{{url_for('static', filename='stylesheets/404.css')}}{% endblock %}
 
 {% block body %}
 <h1>404</h1>
