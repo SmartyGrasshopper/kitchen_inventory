@@ -350,7 +350,7 @@ def consumption_graph(ingridient_id,measuring_unit):
     #x = [x['consumption_date'] for x in consumptionData]
 
     # calculating predicion list using simple moving average
-    max_window_size = 50
+    max_window_size = 7
     prediction_length = 10
 
     prediction = []
