@@ -16,7 +16,7 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <ul id="flash">
-        <button onclick="document.getElementById('flash').style.display='none';" class="close-button">&#9746;</button>
+        <button onclick="document.getElementById('flash').style.display='none';" class="close-button">&Cross;</button>
         {% for category, message in messages %}
         <li class="flash_messages">
             {% if category == 'success' %}
