@@ -5,6 +5,7 @@ import click
 from flask import current_app, g
 
 from werkzeug.security import generate_password_hash
+import re
 
 def get_db():
     if 'db' not in g:
@@ -43,6 +44,9 @@ def add_db_functionality(app):
 
 def create_new_user(username, password, business_name):
     db = get_db()
+    valid_username_pattern = re.compile(r'^[a-z0-9_]+$')
+    if(not bool(re.match(valid_username_pattern, username))):
+        return (True, 'Invalid username "{}". Username can only contain small letters, numbers and underscore.'.format(username))
 
     # Adding user to the users table
     try:
@@ -52,12 +56,12 @@ def create_new_user(username, password, business_name):
         )        
     except db.IntegrityError:
         db.rollback()
-        return (True, "Error in sign-up: Username already in use. Please select a different username.")
+        return (True, "Username already in use. Please select a different username.")
     
     # creating all the tables for the user's data
     f = current_app.open_resource("schemas/init_user_tables.sql")
     try:
-        # Removed executescript since it commits before executing.
+        # Removed executescript since it commits before and after executing.
         # This behaviour is strictly not wanted here. We only want commit at the end.
         #db.executescript(f.read().decode('utf8').format(username=username))
         for statement in f.read().decode('utf8').split(';'):
