@@ -12,6 +12,21 @@ their kitchen inventory.
 ![Supply Page](gallery/supply_page.png)
 ![Analytics Page, showing consumption records and prediction.](gallery/analytics_page.png)
 
+## Application & Purpose
+Features and basic description.
+
+## Logical Architecture
+
+Details of how it is intended to work.
+Relationship among tables, etc.
+
+## Technical Architectecture
+
+In short, this is a multipage web application.
+It is served using the Python Flask web framework over https.
+HTML documents styled with CSS are used for user interaction
+on the browser. SQLite is used for the database.
+
 ## Roadmap
 
 Roadmap of main goals -

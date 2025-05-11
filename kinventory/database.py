@@ -57,7 +57,14 @@ def create_new_user(username, password, business_name):
     # creating all the tables for the user's data
     f = current_app.open_resource("schemas/init_user_tables.sql")
     try:
-        db.executescript(f.read().decode('utf8').format(username=username))
+        # Removed executescript since it commits before executing.
+        # This behaviour is strictly not wanted here. We only want commit at the end.
+        #db.executescript(f.read().decode('utf8').format(username=username))
+        for statement in f.read().decode('utf8').split(';'):
+            statement = statement.strip()
+            if(statement != ''):
+                statement += ';'
+                db.execute(statement.format(username=username))
     except:
         db.rollback()
         return(True, 'Some error occured during signup.')
