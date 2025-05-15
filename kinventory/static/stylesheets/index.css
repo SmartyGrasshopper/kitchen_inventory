@@ -1,6 +1,6 @@
 @import url("/static/stylesheets/base.css");
 
-header{
+header {
     background-color: rgb(255, 255, 150);
 
     display: flex;
@@ -9,48 +9,55 @@ header{
     padding: 3%;
 }
 
-h1#header_title{
+h1#header_title {
     color: orangered;
     text-align: center;
 }
 
-#header_image{
+#header_image {
     width: 250px;
     height: auto;
 }
 
-header > div{
+header>div {
     width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-header > div > p{
+header>div>p {
     text-align: center;
 }
 
-article{
+article {
     display: flex;
     justify-content: center;
 }
-#content_div{
-    width: 40%;
+
+#content_div {
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
-@media(max-width:420px){
-    #content_div{
-        width:90%;
-    }
-
-    header>div{
-        width:70%;
-    }
-}
-
-footer{
+footer {
     text-align: center;
-    border-top: 1px dashed black;
     padding-top: 10px;
-    padding-bottom:5px;
+    padding-bottom: 5px;
+    background-color: whitesmoke;
+}
+
+.feature {
+    background: #ffffff;
+    padding: 20px;
+    border: 1px dashed rgb(197, 197, 197);
+}
+
+.features-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: auto;
 }
